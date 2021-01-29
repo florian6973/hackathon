@@ -15,7 +15,7 @@ class Map:
         self.__encoding__ = 'UTF-8'
         self.__delimiter__ = ' '
         self.__comment__ = '§'
-        self.superposes = ['v', 'a', 'd', 'm', '+']
+        self.superposes = ['v', 'a', 'd', 'm', '+', '€']
 
         folder_img = 'resx/imgs/'
         self.textures = {'-': pg.image.load(get_path(folder_img + 'wall.png')),
@@ -27,6 +27,7 @@ class Map:
                          '+' : pg.image.load(get_path(folder_img + 'door.png')),
                          '#' : pg.image.load(get_path(folder_img + 'corridor.png')),
                          '.' : pg.image.load(get_path(folder_img + 'sol.png')),
+                         '€' : pg.image.load(get_path(folder_img + 'money.png')),
                          '¤' : pg.image.load(utils.get_path(folder_img + 'void.png'))}
 
     def get_tile(self, i, j):
@@ -36,7 +37,7 @@ class Map:
                 return [self.textures['.'], t]
             else:
                 return [t]
-        elif self.map[i,j] == '@':
+        elif self.map[i,j] in ['@', '&']:
             return [self.textures['.']]
         else:
             return [self.textures['¤']]
@@ -120,7 +121,6 @@ class Map:
                         print('err')
         
         # personnages, potions, gobelins
-
         def ajouter_elem(elem, min_i=1, max_i=6):
             nb_potions = rd.randint(min_i, max_i)
             for _ in range(nb_potions):
@@ -135,6 +135,7 @@ class Map:
         ajouter_elem('a',1,3)
         ajouter_elem('d',1,3)
         ajouter_elem('m',1,3)
+        ajouter_elem('€',1,3)    
         ajouter_elem('&', 2, 10)    
 
         print("Map generated")   
