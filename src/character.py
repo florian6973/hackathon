@@ -8,7 +8,7 @@ class Player:
         x, y = pos
         self.name = name
         self.life = life
-        self.inventory = []
+        self.inventory = ['vie': 0, 'defense': 0, 'mana': 0, 'force': 0]
         self.damage = damage
         self.defense = defense
         self.alive = True
@@ -27,6 +27,7 @@ class Player:
         self.indice_animation = 0
         self.attaque = False
         self.direction = (0, 0)
+        self.orientation = 'droite'
         self.rect.x = 16*x
         self.rect.y = 16*y
         self.coordonnees_x = x
@@ -57,6 +58,21 @@ class Player:
 
             if evil.alive:
                 self.receive_damage(evil)
+
+    def get_potion(self, tile):
+        if tile == '':
+            self.inventory
+        elif tile == '':
+
+        elif tile == '':
+
+    def fireball(self):
+        if self.mana >= 5:
+            self.mana -= 5
+            if ball_direction == (0, 0):
+                ball_direction = (1, 0)
+            else:
+                ball_direction = self.direction
 
     def is_alive(self):
         return self.alive
@@ -147,7 +163,6 @@ class Evil:
                 self.attaque = True
                 player.receive_damage(self)
                 self.compteur = 50
-                print(player.life)
 
         if self.alive == True:
             if (abs(ecart_x) < 5 and abs(ecart_y)) < 5 and not self.fight:
