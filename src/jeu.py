@@ -10,7 +10,7 @@ class Jeu:
         self.taille_y = 25
         self.map = Map(self.taille_x, self.taille_y)
         self.map.load(map_name)
-        icone = pg.image.load("resx/imgs/icon.png")
+        icone = pg.image.load(get_path("resx/imgs/icon.png"))
 
         pg.display.set_icon(icone)
         
