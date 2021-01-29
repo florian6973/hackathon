@@ -5,7 +5,6 @@ import random as rd
 import pygame as pg
 
 class Map:
-
     def __init__(self, tx, ty):
         self.map = np.full((ty, tx), " ", dtype='U1') #ne pas inverser
         self.__folder__ = 'resx/maps/'
@@ -13,27 +12,18 @@ class Map:
         self.__delimiter__ = ' '
         self.__comment__ = '§'
 
-    @staticmethod
-    def get_img(char):
-        folder = 'resx/imgs/'
-        def c(n):
-            return utils.get_path(folder + n)
-        if char=='¤':
-            return ""
-        elif char in ['-', '|']:
-            return c('wall.png')
-        elif char in ['#']:
-            return c('corridor.png')
-        elif char in ['.']:
-            return c('sol.png')
-        elif char in ['o']:
-            return c('door.png') # faire doorenter ensuite
-        else:
-            return c("void.png")
-            #raise Exception("Unknown char")
+        folder_img = 'resx/imgs/'
+        self.textures = {'-': pg.image.load(utils.get_path(folder_img + 'wall.png')),
+                         '+' : pg.image.load(utils.get_path(folder_img + 'door.png')),
+                         '#' : pg.image.load(utils.get_path(folder_img + 'corridor.png')),
+                         '.' : pg.image.load(utils.get_path(folder_img + 'sol.png')),
+                         '¤' : pg.image.load(utils.get_path(folder_img + 'void.png'))}
 
     def get_tile(self, i, j):
-        return pg.image.load(Map.get_img(self.map[i,j]))
+        if self.map[i,j] in self.textures:
+            return self.textures[self.map[i,j]]
+        else:
+            return self.textures['¤']
 
     def load(self, name):
         self.map = np.genfromtxt(utils.get_path(self.__folder__ + name), delimiter=self.__delimiter__, dtype='U1', comments=self.__comment__, encoding=self.__encoding__)
@@ -92,10 +82,10 @@ def test_map():
     print("Running test_map")
     m = Map(50, 25) # incohérent
     m.load("map0.rg")
-    print(Map.get_img(m.map[2,3]))
+    #print(Map.get_img(m.map[2,3]))
     print(m.map)
     print(m.get_tile(2,3))
-    m.generate()
+    #m.generate()
 
     m.save("map1.rg")
 

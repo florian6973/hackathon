@@ -22,11 +22,23 @@ class Player:
         if self.direction[1] != 0:
             self.rect.y += self.direction[1]*size
 
+    def rentrer_mur(self, next_tile):
+        if next_tile in ['-', '|', '¤']:
+            self.direction = (0,0)
+        
+
     def receive_damage(self, evil):
-        self.life -= evil.damage - self.defense
+        if evil.damage - self.defense > 0:
+            self.life -= evil.damage - self.defense
 
         if self.life <= 0:
             self.alive = False
+
+    def combat(self, evil):
+        while self.life > 0 and evil.life > 0:
+            evil.receive_damage(self)
+            if evil.alive:
+                self.receive_damage(evil)
 
     def is_alive(self):
         return self.alive
@@ -62,7 +74,7 @@ class Player:
                 self.money -= cost
 
     def __repr__(self):
-        return f'{self.name} {self.life} {self.damage} {self.inventory}'
+        return f'name {self.name} life {self.life} damage {self.damage} defense {self.defense} invent {self.inventory}'
 
 
 class Evil:
@@ -70,12 +82,23 @@ class Evil:
         self.name = name
         self.life = life
         self.damage = damage
-        # self.image = pg.image.load(get_path("resx/imgs/evil.png"))
-        # self.rect = self.image.get_rect()
-        # self.rect.x, self.rect.y = x, y
+        self.alive = True
+        self.image = pg.image.load(get_path("resx/imgs/goblin.png"))
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = x, y
 
     def receive_damage(self, player):
         self.life -= player.damage
+        if self.life < 0:
+            self.alive = False
+
+    def is_alive(self):
+        return self.alive
+
+    def move(self, player):
+        if abs(self.rect.x - player.rect[0]) and abs(self.rect.y - player.rect[1]):
+            self.rect.x = x
+            self.rect.y = y
 
 
 class Marchand:
@@ -94,6 +117,6 @@ if __name__ == '__main__':
     print(T)
     T.use_object('force 10')
 
-    E = Evil('E', 10, 1, 3*16, 5*16)
-    T.receive_damage(E)
+    E = Evil('E', 10, 5, 3*16, 5*16)
+    T.combat(E)
     print(T)
