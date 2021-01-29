@@ -105,6 +105,9 @@ class Jeu:
     def __init__(self, map_name):
         def run():
             run_game(self)
+        def set_nom(val):
+            #print(val)
+            self.comment = self.font.render(val + ", trouvez l'objet caché !", True, (0, 0, 0))
         
         self.taille_x = 50
         self.taille_y = 25
@@ -126,15 +129,16 @@ class Jeu:
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
         self.font = pg.font.SysFont("Comic Sans MS", 16)
+        sx, sy = 16 * self.taille_x, 16*self.taille_y + 100
         self.screen = pg.display.set_mode(
-            (16 * self.taille_x, 16*self.taille_y + 100))
+            (sx, sy))
 
-        menu = pgm.Menu(300, 400, 'Welcome',
-                       theme=pgm.themes.THEME_BLUE)
-        menu.add_text_input('Name :', default='John Doe')
+        menu = pgm.Menu(300, 400, 'LE WISHER',
+                       theme=pgm.themes.THEME_DARK)
+        menu.add_text_input('Nom :', default='Gérard', onchange=set_nom)
         #menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)        
-        menu.add_button('Play', run)
-        menu.add_button('Quit', pgm.events.EXIT)
+        menu.add_button('Jouer', run)
+        menu.add_button('Quitter', pgm.events.EXIT)
         menu.mainloop(self.screen)
 
         self.son_potion = pg.mixer.Sound(
@@ -181,8 +185,7 @@ class Jeu:
         self.screen.blit(
             text_potion3, [450, self.taille_y * self.taille_case + 50, 16, 16])
         self.screen.blit(
-            self.font.render(
-            self.comment, True, (0, 0, 0)), [10, self.taille_y * self.taille_case + 80, 16, 16])
+            self.comment, [10, self.taille_y * self.taille_case + 80, 16, 16])
         for i in range(self.taille_y):
             for j in range(self.taille_x):
                 for img in self.map.get_tile(i, j):
