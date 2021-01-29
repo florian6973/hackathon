@@ -31,7 +31,7 @@ class Jeu:
 
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
-        self.potion = self.map.textures['!']
+        #self.potion = self.map.textures['!']
 
     def afficher(self, player, ennemis):
         pg.draw.rect(self.screen, (255, 255, 255), (0, 0, self.taille_x *

@@ -8,7 +8,7 @@ class Player:
         x, y = pos
         self.name = name
         self.life = life
-        self.inventory = ['vie': 0, 'defense': 0, 'mana': 0, 'force': 0]
+        self.inventory = {'vie': 0, 'defense': 0, 'mana': 0, 'force': 0}
         self.damage = damage
         self.defense = defense
         self.alive = True
@@ -60,11 +60,14 @@ class Player:
                 self.receive_damage(evil)
 
     def get_potion(self, tile):
-        if tile == '':
-            self.inventory
-        elif tile == '':
-
-        elif tile == '':
+        if tile == 'v':
+            self.inventory[0] += 1
+        elif tile == 'd':
+            self.inventory[1] += 1
+        elif tile == 'm':
+            self.inventory[2] += 1
+        elif tile == 'a':
+            self.inventory[3] += 1
 
     def fireball(self):
         if self.mana >= 5:

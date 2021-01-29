@@ -15,12 +15,15 @@ class Map:
         self.__encoding__ = 'UTF-8'
         self.__delimiter__ = ' '
         self.__comment__ = '§'
-        self.superposes = ['!', '+']
+        self.superposes = ['v', 'a', 'd', 'm', '+']
 
         folder_img = 'resx/imgs/'
         self.textures = {'-': pg.image.load(get_path(folder_img + 'wall.png')),
                          '|': pg.image.load(get_path(folder_img + 'wall.png')),
-                         '!': pg.image.load(get_path(folder_img + 'defpotion.png')),
+                         'v': pg.image.load(get_path(folder_img + 'lifepotion.png')),
+                         'a': pg.image.load(get_path(folder_img + 'strengthpotion.png')),
+                         'd': pg.image.load(get_path(folder_img + 'defpotion.png')),
+                         'm': pg.image.load(get_path(folder_img + 'manapotion.png')),
                          '+' : pg.image.load(get_path(folder_img + 'door.png')),
                          '#' : pg.image.load(get_path(folder_img + 'corridor.png')),
                          '.' : pg.image.load(get_path(folder_img + 'sol.png')),
@@ -128,7 +131,10 @@ class Map:
                     break
 
         ajouter_elem('@', 1, 1)
-        ajouter_elem('!')
+        ajouter_elem('v',1,3)
+        ajouter_elem('a',1,3)
+        ajouter_elem('d',1,3)
+        ajouter_elem('m',1,3)
         ajouter_elem('&', 2, 10)    
 
         print("Map generated")   
