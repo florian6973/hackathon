@@ -31,7 +31,7 @@ class Jeu:
             (16 * self.taille_x, 16*self.taille_y + 100))
         self.taille_case = 16
         
-        self.comment = "RAS"
+        self.comment = "Trouvez l'objet caché !"
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
         self.son_potion = pg.mixer.Sound(
