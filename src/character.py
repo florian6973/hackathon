@@ -27,6 +27,7 @@ class Player:
         self.indice_animation = 0
         self.attaque = False
         self.direction = (0, 0)
+        self.orientation_bas_haut = 'bas'
         self.orientation = 'droite'
         self.rect.x = 16*x
         self.rect.y = 16*y
