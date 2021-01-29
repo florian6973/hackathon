@@ -3,17 +3,18 @@ import utils
 from jeu import Jeu
 from character import *
 import sys
+import numpy as np
 
 def main():
     map_n = ""    
     if len(sys.argv) >= 2:
         map_n = sys.argv[1]
 
-    player = Player("Robin")
-    jeu = Jeu(map_n)
-    ennemi = Evil("JE", 7, 2, 3, 3)
-    player.rect.x = jeu.taille_case
-    player.rect.y = jeu.taille_case
+    jeu = Jeu(map_n)        
+    x,y=list(zip(*np.where(jeu.map.map == '@')))[0][::-1]
+    player = Player("Robin", pos=(x,y))
+    x,y=list(zip(*np.where(jeu.map.map == '&')))[0][::-1]
+    ennemi = Evil("JE", 7, 2, x,y)
 
         
     MUSIC = utils.get_path('resx/bgm/wishertheme.mp3')

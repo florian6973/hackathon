@@ -123,7 +123,7 @@ class Map:
                 self.map[cases[ind]] = elem
                 del cases[ind]
 
-        ajouter_elem('@')
+        ajouter_elem('@', 1)
         ajouter_elem('!')
         ajouter_elem('&')    
 

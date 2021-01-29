@@ -4,7 +4,8 @@ from utils import get_path
 
 
 class Player:
-    def __init__(self, name, life=15, damage=3, defense=1, money=5, x=1, y=1):
+    def __init__(self, name, life=15, damage=3, defense=1, money=5, pos=(1,1)):
+        x,y=pos
         self.name = name
         self.life = life
         self.inventory = []
