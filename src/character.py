@@ -93,7 +93,7 @@ class Player:
     def use_object(self, object):
 
         if object in self.inventory:
-            self.inventory.remove(object)
+            self.inventory[object] -= 1
             if object == 'vie':
                 self.life += 10
             if object == 'force':
