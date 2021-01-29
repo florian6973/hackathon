@@ -18,7 +18,8 @@ class Jeu:
         pg.draw.rect(self.screen, (0,0,0), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case))
         for i in range(self.taille_y):
             for j in range(self.taille_x):
-                self.screen.blit(self.map.get_tile(i, j), (self.taille_case * j , self.taille_case *i ))
+                for img in self.map.get_tile(i, j):
+                    self.screen.blit(img, (self.taille_case * j , self.taille_case *i ))
         self.screen.blit(player.image, player.rect)
         pg.display.flip()
 
