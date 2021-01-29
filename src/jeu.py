@@ -17,10 +17,14 @@ class Jeu:
     def afficher(self, player, ennemi):
         pg.draw.rect(self.screen, (255,255,255), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case + 100))
         
-        text_vie = self.font.render(str(player.life), True, (0,0,0))
-        text_money = self.font.render(str(player.money), True, (0,0,0))
-        text_damage = self.font.render(str(player.damage), True, (0,0,0))
-        text_defense = self.font.render(str(player.defense), True, (0,0,0))
+        text_vie = self.font.render("Vie = " + str(player.life), True, (0,0,0))
+        text_money = self.font.render("Argent = " + str(player.money), True, (0,0,0))
+        text_damage = self.font.render("Attaque = " + str(player.damage), True, (0,0,0))
+        text_defense = self.font.render("Defense = " + str(player.defense), True, (0,0,0))
+        self.screen.blit(text_vie, [10, self.taille_y * self.taille_case + 20, 16, 16])
+        self.screen.blit(text_money, [200, self.taille_y * self.taille_case + 20, 16, 16])
+        self.screen.blit(text_damage, [400, self.taille_y * self.taille_case + 20, 16, 16])
+        self.screen.blit(text_defense, [600, self.taille_y * self.taille_case + 20, 16, 16])
 
         for i in range(self.taille_y):
             for j in range(self.taille_x):
