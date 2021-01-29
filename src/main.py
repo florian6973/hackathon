@@ -4,17 +4,19 @@ from character import *
 
 def main():    
     player = Player("Robin")
-    player.rect.x = 0
-    player.rect.y = 0
     jeu = Jeu()
+    player.rect.x = jeu.taille_case
+    player.rect.y = jeu.taille_case
+    
     running = True
      
     # main loop
     while running:
-        pg.time.wait(100)
+        pg.time.wait(50)
         jeu.afficher(player)
+        player.rentrer_mur(jeu.map.map[player.rect.y//jeu.taille_case + player.direction[1], player.rect.x//jeu.taille_case + player.direction[0]])
+
         player.move(jeu.taille_case)
-        player.rentrer_mur(jeu.map.map[player.rect.x//jeu.taille_case + player.direction[0]], jeu.map.map[player.rect.y//jeu.taille_case + player.direction[1]])
         # event handling, gets all event from the event queue
         for event in pg.event.get():
             # only do something if the event is of type QUIT
