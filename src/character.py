@@ -72,6 +72,9 @@ class Player:
         elif tile == 'a':
             self.inventory['force'] += 1
             return True
+        elif tile == '€':
+            self.money += 1
+            return True
         return False
 
     def fireball(self):
