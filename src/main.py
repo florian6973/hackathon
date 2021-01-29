@@ -86,13 +86,21 @@ def main():
                         if ennemi.fight:
                             player.combat(ennemi)
                 elif event.key == pg.K_f:
+                    jeu.son_potion.play()
                     player.use_object("force")
+                    jeu.son_potion.stop()
                 elif event.key == pg.K_m:
+                    jeu.son_potion.play()
                     player.use_object("mana")
+                    jeu.son_potion.stop()
                 elif event.key == pg.K_d:
+                    jeu.son_potion.play()
                     player.use_object("defense")
+                    jeu.son_potion.stop()
                 elif event.key == pg.K_v:
+                    jeu.son_potion.play()
                     player.use_object("vie")
+                    jeu.son_potion.stop()
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 

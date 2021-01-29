@@ -34,6 +34,9 @@ class Jeu:
         self.comment = "RAS"
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
+        self.son_potion = pg.mixer.Sound(
+            get_path('resx/bgm/potion.mp3')
+        )
         #self.potion = self.map.textures['!']
 
     def afficher(self, player, ennemis):
