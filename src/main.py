@@ -1,5 +1,8 @@
 import pygame as pg
 
+# 32x32 une image
+
+
 def main():    
     # initialize the pygame module
     pg.init()
