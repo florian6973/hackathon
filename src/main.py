@@ -3,18 +3,20 @@ import utils
 from jeu import Jeu
 from character import *
 
-MUSIC = utils.get_path('resx/bgm/Powerwolf.mp3')
-pg.mixer.init()
-pg.mixer.music.load(MUSIC)
-pg.mixer.music.set_volume(3/10.)
-
 def main():    
     player = Player("Robin")
     jeu = Jeu()
     ennemi = Evil("JE", 100, 1, 3, 3)
     player.rect.x = jeu.taille_case
     player.rect.y = jeu.taille_case
-    
+
+        
+    MUSIC = utils.get_path('resx/bgm/Powerwolf.mp3')
+    pg.mixer.init()
+    pg.mixer.music.load(MUSIC)
+    pg.mixer.music.set_volume(3/10.)
+    pg.mixer.music.play(-1)
+        
     running = True
      
     # main loop
@@ -30,7 +32,6 @@ def main():
         player.move(jeu.taille_case)
         l = [jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x + 1], jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x - 1], jeu.map.map[ennemi.coordonnees_y - 1, ennemi.coordonnees_x], jeu.map.map[ennemi.coordonnees_y + 1, ennemi.coordonnees_x]]
         ennemi.move(player, jeu.taille_case, l)
-        pg.mixer.music.play(-1)
 
         # event handling, gets all event from the event queue
         for event in pg.event.get():
