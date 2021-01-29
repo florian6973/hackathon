@@ -11,8 +11,10 @@ def main():
      
     # main loop
     while running:
+        pg.time.wait(100)
         jeu.afficher(player)
         player.move(jeu.taille_case)
+        player.rentrer_mur(jeu.map.map[player.rect.x//jeu.taille_case + player.direction[0]], jeu.map.map[player.rect.y//jeu.taille_case + player.direction[1]])
         # event handling, gets all event from the event queue
         for event in pg.event.get():
             # only do something if the event is of type QUIT
@@ -28,6 +30,8 @@ def main():
                     player.direction = (0, -1)
                 elif event.key == pg.K_DOWN:
                     player.direction = (0, 1)
+            elif event.type == pg.KEYUP:
+                player.direction = (0, 0)
 
 
 
