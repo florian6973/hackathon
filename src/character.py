@@ -103,11 +103,11 @@ class Evil:
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x*16, y*16
         self.images = [self.image]
-        for k in range(1,3):
+        for k in range(1, 3):
             self.images.append(pg.image.load(
                 get_path("resx/imgs/goblin" + str(k) + ".png")))
         for k in range(2, 0, -1):
-            
+
             self.images.append(pg.image.load(
                 get_path("resx/imgs/goblin" + str(k) + ".png")))
         self.indice_animation = 0
@@ -116,6 +116,7 @@ class Evil:
         self.coordonnees_y = y
         self.fight = False
         self.compteur = 0
+        self.attaque = False
 
     def receive_damage(self, player):
         self.life -= player.damage
