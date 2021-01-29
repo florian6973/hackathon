@@ -108,25 +108,26 @@ class Evil:
         return self.alive
 
     def move(self, player, size, next_tiles):
-        ecart_x = self.rect.x - player.rect[0]
-        ecart_y = self.rect.y - player.rect[1]
+        ecart_x = self.coordonnees_x - player.coordonnees_x
+        ecart_y = self.coordonnees_y - player.coordonnees_y
+        print(ecart_x, ecart_y)
         if abs(ecart_x) < 5 and abs(ecart_y) < 5:
             directions_possibles = []
-            directions_associees = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+            directions_associees = [(1, 0), (-1, 0), (0, -1), (0, 1)]
             for pos, tile in enumerate(next_tiles):
                 if tile not in ['-', '|', '¤']:
                     directions_possibles.append(directions_associees[pos])
 
             if abs(ecart_y) < abs(ecart_x):
-                if ecart_x < 0 and (-1, 0) in directions_possibles:
-                    self.direction = (-1, 0)
-                elif ecart_x > 0 and (1, 0) in directions_possibles:
+                if ecart_x < 0 and (1, 0) in directions_possibles:
                     self.direction = (1, 0)
+                elif ecart_x > 0 and (-1, 0) in directions_possibles:
+                    self.direction = (-1, 0)
             else:
-                if ecart_x < 0 and (-1, 0) in directions_possibles:
-                    self.direction = (-1, 0)
-                elif ecart_x > 0 and (1, 0) in directions_possibles:
-                    self.direction = (1, 0)
+                if ecart_y > 0 and (0, -1) in directions_possibles:
+                    self.direction = (0, -1)
+                elif ecart_y < 0 and (0, 1) in directions_possibles:
+                    self.direction = (0, 1)
             self.coordonnees_x += self.direction[0]
             self.coordonnees_y += self.direction[1]
             self.rect.x += self.direction[0]*size
