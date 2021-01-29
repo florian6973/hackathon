@@ -125,6 +125,8 @@ class Jeu:
         pg.display.set_caption("Le Wisher : Gérard Dérive")
 
         self.taille_case = 16        
+        self.son_potion = pg.mixer.Sound(
+            get_path('resx/bgm/potion.mp3'))
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
         self.font = pg.font.SysFont("Comic Sans MS", 16)
