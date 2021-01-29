@@ -68,13 +68,17 @@ class Map:
                         self.map[ib,jb] = '.'
                     elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
                         self.map[ib,jb] = '-'
-                        borders.append(ib,jb)
+                        #if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1)))
+                        #borders.append((ib,jb))
+                        #faire la bonne taille pour simplifier...
                     #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))): 
                     #    self.map[ib,jb] = '-'
                     #elif (((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))) and ((ib==i) or (jb==j) or (ib==(i+taille-1)) or (jb==(j+taille-1)))):
                     #    self.map[ib,jb] = '-'
             col.append(borders)
 
+        for e in col:
+            self.map[e[rd.randrange(0, len(e))]] = '+'
         
 
 
