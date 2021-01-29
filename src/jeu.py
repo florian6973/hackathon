@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import numpy as np
 import pygame as pg
 from map import Map
@@ -21,8 +23,9 @@ class Jeu:
 
         pg.display.set_icon(icone)
 
-        pg.init()
+        pg.init()      
         pg.display.set_caption("Le Wisher : Gérard Dérive")
+
         self.font = pg.font.SysFont("Comic Sans MS", 16)
         self.screen = pg.display.set_mode(
             (16 * self.taille_x, 16*self.taille_y + 100))
