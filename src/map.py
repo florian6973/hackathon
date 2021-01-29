@@ -2,8 +2,7 @@ import numpy as np
 import os
 import utils
 import random as rd
-
-#matrice avec string
+import pygame as pg
 
 class Map:
 
@@ -30,11 +29,11 @@ class Map:
         elif char in ['o']:
             return c('door.png') # faire doorenter ensuite
         else:
-            raise Exception("Unknown char")
+            return c("default.png")
+            #raise Exception("Unknown char")
 
     def get_tile(self, i, j):
-        return Map.get_img(self.map[i,j])
-
+        return pg.image.load(Map.get_img(self.map[i,j]))
 
     def load(self, name):
         self.map = np.genfromtxt(utils.get_path(self.__folder__ + name), delimiter=self.__delimiter__, dtype='U1', comments=self.__comment__, encoding=self.__encoding__)
@@ -78,6 +77,7 @@ def test_map():
     m.load("map0.rg")
     print(Map.get_img(m.map[2,3]))
     print(m.map)
+    print(m.get_tile(2,3))
     m.generate()
 
     m.save("map1.rg")
