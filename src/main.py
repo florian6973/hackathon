@@ -5,7 +5,7 @@ from character import *
 import sys
 
 def main():
-    map_n = "map0.rg"    
+    map_n = ""    
     if len(sys.argv) >= 2:
         map_n = sys.argv[1]
 

@@ -4,6 +4,7 @@ from map import Map
 import character
 import os
 from utils import get_path
+import time
 
 
 class Jeu:
@@ -11,7 +12,11 @@ class Jeu:
         self.taille_x = 50
         self.taille_y = 25
         self.map = Map(self.taille_x, self.taille_y)
-        self.map.load(map_name)
+        if (map_name == ""):
+            self.map.generate()
+            self.map.save("map_" + str(int(time.time())) + ".rg")
+        else:
+            self.map.load(map_name)
         icone = pg.image.load(get_path("resx/imgs/icon.png"))
 
         pg.display.set_icon(icone)
@@ -22,14 +27,10 @@ class Jeu:
         self.screen = pg.display.set_mode(
             (16 * self.taille_x, 16*self.taille_y + 100))
         self.taille_case = 16
-<<<<<<< HEAD
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
         self.potion = self.map.textures['!']
 
-=======
-        self.son_attaque_gerard = pg.mixer.Sound(get_path('resx/bgm/swordhit.mp3'))
->>>>>>> f1bf4ea50b28b9d77f4b4002d4eba3d2303920bc
     def afficher(self, player, ennemi):
         pg.draw.rect(self.screen, (255, 255, 255), (0, 0, self.taille_x *
                                                     self.taille_case, self.taille_y * self.taille_case + 100))
