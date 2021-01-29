@@ -12,6 +12,7 @@ class Map:
         self.__encoding__ = 'UTF-8'
         self.__delimiter__ = ' '
         self.__comment__ = '§'
+        self.superposes = ['!']
 
         folder_img = 'resx/imgs/'
         self.textures = {'-': pg.image.load(utils.get_path(folder_img + 'wall.png')),
