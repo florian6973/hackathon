@@ -87,12 +87,16 @@ def run_game(jeu):
                         if ennemi.fight:
                             player.combat(ennemi)
                 elif event.key == pg.K_f:
+                    jeu.son_potion.play()
                     player.use_object("force")
                 elif event.key == pg.K_m:
+                    jeu.son_potion.play()
                     player.use_object("mana")
                 elif event.key == pg.K_d:
+                    jeu.son_potion.play()
                     player.use_object("defense")
                 elif event.key == pg.K_v:
+                    jeu.son_potion.play()
                     player.use_object("vie")
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
@@ -133,6 +137,8 @@ class Jeu:
         menu.add_button('Quit', pgm.events.EXIT)
         menu.mainloop(self.screen)
 
+        self.son_potion = pg.mixer.Sound(
+            get_path('resx/bgm/potion.mp3'))
         #self.potion = self.map.textures['!']
 
     def afficher(self, player, ennemis):
