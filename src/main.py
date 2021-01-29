@@ -58,7 +58,7 @@ def main():
                     player.direction = (0, 1)
                 elif event.key == pg.K_SPACE and not player.attaque:
                     player.attaque = True
-                    Jeu.son_attaque_gerard.play()
+                    jeu.son_attaque_gerard.play()
                     player.combat(ennemi)
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
