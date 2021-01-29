@@ -21,15 +21,15 @@ class Map:
         if char=='¤':
             return ""
         elif char in ['-', '|']:
-            return c('mur.png')
+            return c('wall.png')
         elif char in ['#']:
-            return c('couloir.png')
+            return c('corridor.png')
         elif char in ['.']:
             return c('sol.png')
         elif char in ['o']:
             return c('door.png') # faire doorenter ensuite
         else:
-            return c("default.png")
+            return c("void.png")
             #raise Exception("Unknown char")
 
     def get_tile(self, i, j):
@@ -47,23 +47,36 @@ class Map:
             rd.seed(seed)
         ty, tx= self.map.shape
         def valid_pos():            
-            dep_x = rd.randrange(1, tx-1) # pas sur le bord
-            dep_y = rd.randrange(1, ty-1)
+            dep_x = rd.randrange(1, tx-2) # pas sur le bord
+            dep_y = rd.randrange(1, ty-2) # en bas case pas vide
             if (self.map[dep_y, dep_x] == '¤'):
                 return (dep_y, dep_x)
             else:
                 return valid_pos()
         self.map = np.full((ty, tx), "¤", dtype='U1')
-        nb_rooms = rd.randint(1,6)
+        nb_rooms = rd.randint(1,8)
+        col = []
         for _ in range(nb_rooms):
             i,j = valid_pos()
             self.map[i,j] = '.'
             #pièce carrée
-            taille = rd.randint(3,9)
+            taille = rd.randint(3,8)
+            borders = []
             for ib in range(i, i+taille):
                 for jb in range(j ,j+taille):
-                    if (0 < ib < (ty-1)) and 0 < (jb) < (tx-1):
+                    if ((0 < ib < (ty-1)) and (0 < (jb) < (tx-1))) and ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1))):
                         self.map[ib,jb] = '.'
+                    elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
+                        self.map[ib,jb] = '-'
+                        borders.append(ib,jb)
+                    #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))): 
+                    #    self.map[ib,jb] = '-'
+                    #elif (((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))) and ((ib==i) or (jb==j) or (ib==(i+taille-1)) or (jb==(j+taille-1)))):
+                    #    self.map[ib,jb] = '-'
+            col.append(borders)
+
+        
+
 
 
         print(self.map)
