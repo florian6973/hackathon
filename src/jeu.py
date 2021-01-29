@@ -2,12 +2,17 @@ import numpy as np
 import pygame as pg
 from map import Map
 import character
+import os
+from utils import get_path
 class Jeu:
     def __init__(self):
         self.taille_x = 50
         self.taille_y = 25
         self.map = Map(self.taille_x, self.taille_y)
         self.map.load("map0.rg")
+        icone = pg.image.load("resx/imgs/icon.png")
+
+        pg.display.set_icon(icone)
         
         pg.init()
         pg.display.set_caption("minimal program")
