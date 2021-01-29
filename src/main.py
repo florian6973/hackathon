@@ -31,7 +31,7 @@ def main():
             player.indice_animation += 1
             if player.indice_animation == len(player.images) - 1:
                 player.attaque = False
-                Jeu.son_attaque_gerard.stop()
+                jeu.son_attaque_gerard.stop()
                 player.indice_animation = 0
         jeu.afficher(player, ennemi)
         if player.alive:
