@@ -8,7 +8,7 @@ from utils import get_path
 import time
 class Fireball:
     def __init__(self, x, y, direction):
-        self.image = pg.image.load.(get_path("resx/imgs/igni.png"))
+        self.image = pg.image.load(get_path("resx/imgs/igni.png"))
         self.rect = self.image.get_rect()
         self.rect.x = 16 * x
         self.rect.y = 16 * y
