@@ -33,7 +33,7 @@ class Jeu:
             get_path('resx/bgm/swordhit.mp3'))
         self.potion = self.map.textures['!']
 
-    def afficher(self, player, ennemi):
+    def afficher(self, player, ennemis):
         pg.draw.rect(self.screen, (255, 255, 255), (0, 0, self.taille_x *
                                                     self.taille_case, self.taille_y * self.taille_case + 100))
         text_vie = self.font.render(
@@ -64,8 +64,9 @@ class Jeu:
         if player.alive:
             self.screen.blit(
                 player.images[player.indice_animation], player.rect)
-        if ennemi.alive:
-            self.screen.blit(
-                ennemi.images[ennemi.indice_animation], ennemi.rect)
+        for ennemi in ennemis:
+            if ennemi.alive:
+                self.screen.blit(
+                    ennemi.images[ennemi.indice_animation], ennemi.rect)
 
         pg.display.flip()
