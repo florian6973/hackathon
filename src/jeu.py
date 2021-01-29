@@ -12,7 +12,34 @@ from character import *
 import utils
 
 
+def toggle_fullscreen():
+    
+    screen = pg.display.get_surface()
+    tmp = screen.convert()
+    caption = pg.display.get_caption()
+    cursor = pg.mouse.get_cursor()  # Duoas 16-04-2007 
+    
+    w,h = screen.get_width(),screen.get_height()
+    flags = screen.get_flags()
+    bits = screen.get_bitsize()
+    
+    pg.display.quit()
+    pg.display.init()
+    
+    screen = pg.display.set_mode((w,h),flags^pg.FULLSCREEN^pg.HWSURFACE^pg.DOUBLEBUF,bits)
+    screen.blit(tmp,(0,0))
+    pg.display.set_caption(*caption)
+
+    pg.key.set_mods(0) #HACK: work-a-round for a SDL bug??
+
+    pg.mouse.set_cursor( *cursor )  # Duoas 16-04-2007
+    
+    return screen
+
+
 def run_game(jeu):
+
+
     x,y=list(zip(*np.where(jeu.map.map == '@')))[0][::-1]
     player = Player("Robin", pos=(x,y))
     
@@ -30,7 +57,8 @@ def run_game(jeu):
         
     running = True
      
-    # main loop
+
+    # main loop : à remettre dans le fichier main...
     while running:
         pg.time.wait(50)
         if player.attaque:
@@ -63,8 +91,10 @@ def run_game(jeu):
             if event.type == pg.QUIT:
                 # change the value to False, to exit the main loop
                 running = False
-            elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_LEFT:
+            elif event.type == pg.KEYDOWN:                
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                elif event.key == pg.K_LEFT:
                     player.direction = (-1, 0)
                     if player.orientation != "gauche":
                         for i in range(len(player.images)):
@@ -111,8 +141,11 @@ class Jeu:
             #print(val)
             self.comment = self.font.render(val + ", trouvez l'objet caché !", True, (0, 0, 0))
         
-        self.taille_x = 50
-        self.taille_y = 25
+        pg.init()      
+        infoObject = pg.display.Info()
+        self.taille_x = infoObject.current_w//16
+        self.taille_y = (infoObject.current_h)//16 - 6 # pour le texte
+        print(self.taille_x, self.taille_y)
         self.map = Map(self.taille_x, self.taille_y)
         if (map_name == ""):
             self.map.generate()
@@ -123,7 +156,6 @@ class Jeu:
 
         pg.display.set_icon(icone)
 
-        pg.init()      
         pg.display.set_caption("Le Wisher : Gérard Dérive")
 
         p_font = get_path("resx/font/Seagram tfb.ttf")
@@ -137,6 +169,7 @@ class Jeu:
         sx, sy = 16 * self.taille_x, 16*self.taille_y + 100
         self.screen = pg.display.set_mode(
             (sx, sy))
+        self.screen = toggle_fullscreen()
 
         mytheme = pgm.themes.THEME_DARK.copy()
         mytheme.title_font = p_font

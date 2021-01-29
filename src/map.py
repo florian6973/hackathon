@@ -77,7 +77,7 @@ class Map:
                 return valid_pos()
 
 
-        nb_rooms = rd.randint(7,14)
+        nb_rooms = rd.randint(15,30)
         col = []
         for _ in range(nb_rooms):
             i,j, taille = valid_pos()
