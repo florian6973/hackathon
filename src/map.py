@@ -91,7 +91,7 @@ def test_map():
     print(Map.get_img(m.map[2,3]))
     print(m.map)
     print(m.get_tile(2,3))
-    m.generate()
+    #m.generate()
 
     m.save("map1.rg")
 
