@@ -30,6 +30,7 @@ class Player:
         self.direction = (0, 0)
         self.orientation_bas_haut = 'bas'
         self.orientation = 'droite'
+        self.orientation_bis = 'droite'
         self.rect.x = 16*x
         self.rect.y = 16*y
         self.coordonnees_x = x
@@ -48,6 +49,13 @@ class Player:
     def rentrer_mur(self, next_tile):
         if next_tile in ['-', '|', '¤']:
             self.direction = (0, 0)
+    def rentrer_ennemi(self, ennemis):
+        next_x = self.coordonnees_x + self.direction[0]
+        next_y = self.coordonnees_y + self.direction[1]
+        for ennemi in ennemis:
+            if ennemi.coordonnees_x == next_x and ennemi.coordonnees_y == next_y:
+                self.direction = (0, 0)
+                break
 
     def receive_damage(self, evil):
         if evil.damage - self.defense > 0:
@@ -86,8 +94,8 @@ class Player:
         if self.mana >= 5:
             self.mana -= 5
             fireball = Fireball(
-                self.x, self.y, (self.orientation, self.orientation_bas_haut))
-
+                self.coordonnees_x, self.coordonnees_y, self.orientation_bis)
+        return(fireball)
     def is_alive(self):
         return self.alive
 
@@ -179,7 +187,7 @@ class Evil:
                 self.compteur = 50
 
         if self.alive == True:
-            if (abs(ecart_x) < 2 and abs(ecart_y)) < 2 and not self.fight:
+            if (abs(ecart_x) < 3 and abs(ecart_y) < 3) and not self.fight:
                 directions_possibles = []
                 directions_associees = [(1, 0), (-1, 0), (0, -1), (0, 1)]
                 for pos, tile in enumerate(next_tiles):

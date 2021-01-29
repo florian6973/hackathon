@@ -27,7 +27,7 @@ def run_game(jeu):
     pg.mixer.music.load(MUSIC)
     pg.mixer.music.set_volume(3/10.)
     pg.mixer.music.play(-1)
-        
+    fireball = None
     running = True
      
     # main loop
@@ -49,10 +49,21 @@ def run_game(jeu):
             if ennemi.alive:
                 l = [jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x + 1], jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x - 1], jeu.map.map[ennemi.coordonnees_y - 1, ennemi.coordonnees_x], jeu.map.map[ennemi.coordonnees_y + 1, ennemi.coordonnees_x]]
                 ennemi.move(player, jeu.taille_case, l)
+                if fireball != None and ennemi.coordonnees_y == fireball.coordonnees_y and ennemi.coordonnees_x == fireball.coordonnees_x:
+                    fireball.stop()
+                    ennemi.alive = False
+            else:
+                ennemis.remove(ennemi)
+        if fireball != None:
+            if fireball.coordonnees_x > jeu.taille_x and fireball.coordonnees_x < 0 and fireball.coordonnees_y > jeu.taille_y and fireball.coordonnees_y <0 or  jeu.map.map[fireball.coordonnees_y, fireball.coordonnees_x] == "-":
+                fireball.stop()
         
-        jeu.afficher(player, ennemis)
+        jeu.afficher(player, ennemis, fireball)
+        if fireball != None:
+            fireball.move()
         if player.alive:
             player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
+            player.rentrer_ennemi(ennemis)
             player.move(jeu.taille_case)
             potion_recupere = player.get_potion(jeu.map.map[player.coordonnees_y, player.coordonnees_x])
             if potion_recupere:
@@ -64,22 +75,29 @@ def run_game(jeu):
                 # change the value to False, to exit the main loop
                 running = False
             elif event.type == pg.KEYDOWN:
+                
                 if event.key == pg.K_LEFT:
                     player.direction = (-1, 0)
                     if player.orientation != "gauche":
+                        player.direction = (0, 0)
                         for i in range(len(player.images)):
                             player.images[i] = pg.transform.flip(player.images[i], True, False)
                         player.orientation = 'gauche'
+                    player.orientation_bis = 'gauche'
                 elif event.key == pg.K_RIGHT:
                     player.direction = (1, 0)
                     if player.orientation != 'droite':
+                        player.direction = (0,0)
                         for i in range(len(player.images)):
                             player.images[i] = pg.transform.flip(player.images[i], True, False)
                         player.orientation = 'droite'
+                    player.orientation_bis = 'droite'
                 elif event.key == pg.K_UP:
                     player.direction = (0, -1)
+                    player.orientation_bis = 'haut'
                 elif event.key == pg.K_DOWN:
                     player.direction = (0, 1)
+                    player.orientation_bis = 'bas'
                 elif event.key == pg.K_SPACE and not player.attaque:
                     player.attaque = True
                     jeu.son_attaque_gerard.play()
@@ -98,6 +116,8 @@ def run_game(jeu):
                 elif event.key == pg.K_v:
                     jeu.son_potion.play()
                     player.use_object("vie")
+                elif event.key == pg.K_RETURN:
+                    fireball = player.fireball()
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 
@@ -128,7 +148,8 @@ class Jeu:
         self.font = pg.font.SysFont("Comic Sans MS", 16)
         self.screen = pg.display.set_mode(
             (16 * self.taille_x, 16*self.taille_y + 100))
-
+        self.son_potion = pg.mixer.Sound(get_path('resx/bgm/swordhit.mp3'))
+        #self.potion = self.map.textures['!']
         menu = pgm.Menu(300, 400, 'Welcome',
                        theme=pgm.themes.THEME_BLUE)
         menu.add_text_input('Name :', default='John Doe')
@@ -137,11 +158,9 @@ class Jeu:
         menu.add_button('Quit', pgm.events.EXIT)
         menu.mainloop(self.screen)
 
-        self.son_potion = pg.mixer.Sound(
-            get_path('resx/bgm/potion.mp3'))
-        #self.potion = self.map.textures['!']
+        
 
-    def afficher(self, player, ennemis):
+    def afficher(self, player, ennemis, fireball):
         pg.draw.rect(self.screen, (255, 255, 255), (0, 0, self.taille_x *
                                                     self.taille_case, self.taille_y * self.taille_case + 100))
         text_vie = self.font.render(
@@ -195,7 +214,7 @@ class Jeu:
             if ennemi.alive:
                 self.screen.blit(
                     ennemi.images[ennemi.indice_animation], ennemi.rect)
-        if fireball.afficher:
+        if fireball != None and fireball.afficher:
             self.screen.blit(fireball.image, fireball.rect)
 
         pg.display.flip()
