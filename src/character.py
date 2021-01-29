@@ -141,6 +141,7 @@ class Evil:
         if (ecart_x == 0 and abs(ecart_y) == 1) or (abs(ecart_x) == 1 and ecart_y == 0):
             self.fight = True
             if self.compteur == 0:
+                self.attaque = True
                 player.receive_damage(self)
                 self.compteur = 50
                 print(player.life)
