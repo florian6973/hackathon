@@ -14,11 +14,21 @@ class Player:
         self.money = money
         self.image = pg.image.load(get_path("resx/imgs/wisher.png"))
         self.rect = self.image.get_rect()
+        self.images = []
+        for k in range(1, 9):
+            if k != 5:
+                self.images.append(pg.image.load(get_path("resx/imgs/wisher" + str(k) + ".png")))
+        for k in range(8, 0, -1):
+            if k != 5:
+                self.images.append(pg.image.load(get_path("resx/imgs/wisher" + str(k) + ".png")))
+        self.indice_animation = 0
+        self.attaque = False
         self.direction = (0, 0)
         self.rect.x = 16*x
         self.rect.y = 16*y
         self.coordonnees_x = x
         self.coordonnees_y = y
+
 
     def move(self, size):
         if self.direction[0] != 0:
