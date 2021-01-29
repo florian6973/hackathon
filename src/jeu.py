@@ -15,7 +15,7 @@ class Jeu:
         self.screen = pg.display.set_mode((16 * self.taille_x, 16*self.taille_y))
         self.taille_case = 16
     def afficher(self, player):
-        pg.draw.rect(self.screen, (0,0,0), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case))
+        pg.draw.rect(self.screen, (255,255,255), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case))
         for i in range(self.taille_y):
             for j in range(self.taille_x):
                 for img in self.map.get_tile(i, j):
