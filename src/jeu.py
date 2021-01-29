@@ -38,7 +38,7 @@ class Jeu:
         if player.alive:
             self.screen.blit(player.images[player.indice_animation], player.rect)
         if ennemi.alive:
-            self.screen.blit(ennemi.image, ennemi.rect)
+            self.screen.blit(ennemi.images[ennemi.indice_animation], ennemi.rect)
         
         pg.display.flip()
 
