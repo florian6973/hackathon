@@ -131,7 +131,10 @@ class Map:
                     break
 
         ajouter_elem('@', 1, 1)
-        ajouter_elem('!')
+        ajouter_elem('v',1,3)
+        ajouter_elem('a',1,3)
+        ajouter_elem('d',1,3)
+        ajouter_elem('m',1,3)
         ajouter_elem('&', 2, 10)    
 
         print("Map generated")   
