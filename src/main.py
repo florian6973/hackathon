@@ -11,7 +11,7 @@ def main():
     player.rect.y = jeu.taille_case
 
         
-    MUSIC = utils.get_path('resx/bgm/Powerwolf.mp3')
+    MUSIC = utils.get_path('resx/bgm/Lazare.mp3')
     pg.mixer.init()
     pg.mixer.music.load(MUSIC)
     pg.mixer.music.set_volume(3/10.)
