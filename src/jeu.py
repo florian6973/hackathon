@@ -5,11 +5,11 @@ import character
 import os
 from utils import get_path
 class Jeu:
-    def __init__(self):
+    def __init__(self, map_name):
         self.taille_x = 50
         self.taille_y = 25
         self.map = Map(self.taille_x, self.taille_y)
-        self.map.load("map0.rg")
+        self.map.load(map_name)
         icone = pg.image.load("resx/imgs/icon.png")
 
         pg.display.set_icon(icone)
