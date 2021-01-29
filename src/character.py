@@ -15,17 +15,22 @@ class Player:
         self.image = pg.image.load(get_path("resx/imgs/wisher.png"))
         self.rect = self.image.get_rect()
         self.direction = (0, 0)
+        self.rect.x = 16
+        self.rect.y = 16
+        self.coordonnees_x = 1
+        self.coordonnees_y = 1
 
     def move(self, size):
         if self.direction[0] != 0:
             self.rect.x += self.direction[0]*size
+            self.coordonnees_x += self.direction[0]
         if self.direction[1] != 0:
             self.rect.y += self.direction[1]*size
+            self.coordonnees_y += self.direction[1]
 
     def rentrer_mur(self, next_tile):
         if next_tile in ['-', '|', '¤']:
-            self.direction = (0,0)
-        
+            self.direction = (0, 0)
 
     def receive_damage(self, evil):
         if evil.damage - self.defense > 0:
@@ -86,18 +91,32 @@ class Evil:
         self.image = pg.image.load(get_path("resx/imgs/goblin.png"))
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
+        self.direction = (0, 0)
+        self.
 
     def receive_damage(self, player):
         self.life -= player.damage
         if self.life < 0:
             self.alive = False
 
+    def rentrer_mur(self, next_tile):
+        if next_tile in ['-', '|', '¤']:
+            self.direction = (0, 0)
+
     def is_alive(self):
         return self.alive
 
     def move(self, player):
-        if abs(self.rect.x - player.rect[0]) and abs(self.rect.y - player.rect[1]):
-            self.rect.x = x
+        ecart_x = self.rect.x - player.rect[0]
+        ecart_y = self.rect.y - player.rect[1]
+        if abs(ecart_x) < 5 and abs(ecart_y) < 5:
+            direction_possible = []
+
+            if ecart_y < ecart_x:
+                if ecart_x < 0:
+                    self.direction = (-1, 0)
+                else:
+                    self.direction = (1, 0)
             self.rect.y = y
 
 
@@ -113,9 +132,9 @@ class Marchand:
 if __name__ == '__main__':
 
     T = Player('Tristan')
-    T.add_object(['force 10', 'defense 5'])
+    T.add_object(['force 3', 'defense 5'])
     print(T)
-    T.use_object('force 10')
+    T.use_object('force 3')
 
     E = Evil('E', 10, 5, 3*16, 5*16)
     T.combat(E)
