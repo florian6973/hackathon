@@ -4,19 +4,26 @@ from utils import get_path
 
 
 class Player:
-    def __init__(self, name):
+    def __init__(self, name, life=15, damage=3, defense=1, money=5):
         self.name = name
-        self.life = 15
+        self.life = life
         self.inventory = []
-        self.damage = 1
-        self.defense = 1
+        self.damage = damage
+        self.defense = defense
         self.alive = True
-        self.money = 5
+        self.money = money
         self.image = pg.image.load(get_path("resx/imgs/wisher.png"))
         self.rect = self.image.get_rect()
+        self.direction = (0, 0)
 
-    def receive_damage(self, damage):
-        self.life -= damage - self.defense
+    def move(self, size):
+        if self.direction[0] != 0:
+            self.rect.x += self.direction[0]*size
+        if self.direction[1] != 0:
+            self.rect.y += self.direction[1]*size
+
+    def receive_damage(self, evil):
+        self.life -= evil.damage - self.defense
 
         if self.life <= 0:
             self.alive = False
@@ -31,8 +38,8 @@ class Player:
         else:
             self.inventory.append(objects)
 
-    def add_money(self, coin):
-        self.money += coin
+    def add_money(self, argent):
+        self.money += argent
 
     def use_object(self, object):
 
@@ -49,8 +56,9 @@ class Player:
     def buy_object(self, marchand, object):
         if object in marchand.objects:
             stuff, cost = object
-            if money >= cost:
-                self.inventory.append(object)
+            marchand.remove_object(object)
+            if self.money >= cost:
+                self.inventory.append(stuff)
                 self.money -= cost
 
     def __repr__(self):
@@ -58,8 +66,16 @@ class Player:
 
 
 class Evil:
-    def __init__(self, name):
+    def __init__(self, name, life, damage, x, y):
         self.name = name
+        self.life = life
+        self.damage = damage
+        # self.image = pg.image.load(get_path("resx/imgs/evil.png"))
+        # self.rect = self.image.get_rect()
+        # self.rect.x, self.rect.y = x, y
+
+    def receive_damage(self, player):
+        self.life -= player.damage
 
 
 class Marchand:
@@ -71,9 +87,13 @@ class Marchand:
             self.objects.remove(object)
 
 
-T = Player('Tristan')
-T.add_object(['force 10', 'defense 5'])
-print(T)
-T.use_object('force 10')
-T.receive_damage(4)
-print(T)
+if __name__ == '__main__':
+
+    T = Player('Tristan')
+    T.add_object(['force 10', 'defense 5'])
+    print(T)
+    T.use_object('force 10')
+
+    E = Evil('E', 10, 1, 3*16, 5*16)
+    T.receive_damage(E)
+    print(T)
