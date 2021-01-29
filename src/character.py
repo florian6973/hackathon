@@ -1,4 +1,6 @@
+import os
 import pygame as pg
+from utils import get_path
 
 
 class Player:
@@ -10,6 +12,8 @@ class Player:
         self.defense = 1
         self.alive = True
         self.money = 5
+        self.image = pg.image.load(get_path("resx/imgs/wisher.png"))
+        self.rect = self.image.get_rect()
 
     def receive_damage(self, damage):
         self.life -= damage - self.defense
@@ -46,6 +50,8 @@ class Player:
         if object in marchand.objects:
             stuff, cost = object
             if money >= cost:
+                self.inventory.append(object)
+                self.money -= cost
 
     def __repr__(self):
         return f'{self.name} {self.life} {self.damage} {self.inventory}'
