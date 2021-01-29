@@ -6,7 +6,7 @@ from character import *
 def main():    
     player = Player("Robin")
     jeu = Jeu()
-    ennemi = Evil("JE", 7, 1, 3, 3)
+    ennemi = Evil("JE", 7, 2, 3, 3)
     player.rect.x = jeu.taille_case
     player.rect.y = jeu.taille_case
 

@@ -16,7 +16,6 @@ class Jeu:
         self.taille_case = 16
     def afficher(self, player, ennemi):
         pg.draw.rect(self.screen, (255,255,255), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case + 100))
-        
         text_vie = self.font.render("Vie = " + str(player.life), True, (0,0,0))
         text_money = self.font.render("Argent = " + str(player.money), True, (0,0,0))
         text_damage = self.font.render("Attaque = " + str(player.damage), True, (0,0,0))
