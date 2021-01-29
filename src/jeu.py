@@ -19,7 +19,7 @@ class Jeu:
         self.font = pg.font.SysFont("Comic Sans MS", 16)
         self.screen = pg.display.set_mode((16 * self.taille_x, 16*self.taille_y + 100))
         self.taille_case = 16
-        self.son_attaque_gerard = pg.mixer.Sound(utils.get_path('resx/bgm/swordhit.wav'))
+        self.son_attaque_gerard = pg.mixer.Sound(get_path('resx/bgm/swordhit.wav'))
     def afficher(self, player, ennemi):
         pg.draw.rect(self.screen, (255,255,255), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case + 100))
         text_vie = self.font.render("Vie = " + str(player.life), True, (0,0,0))
