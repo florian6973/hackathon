@@ -115,12 +115,15 @@ class Map:
         for i in range(k):
             for j in range(i, k):
                 if i != j:
-                    try:
-                        p = find_path(self.map, locs[i], locs[j])
-                        for e in p[1:-1]:
-                            self.map[e] = '#'
+                    try: #éviter de trop relier
+                        find_path(self.map, locs[i], locs[j], True)
                     except:
-                        print('err')
+                        try:
+                            p = find_path(self.map, locs[i], locs[j])
+                            for e in p[1:-1]:
+                                self.map[e] = '#'
+                        except:
+                            print('err')
         
         # personnages, potions, gobelins
         def ajouter_elem(elem, min_i=1, max_i=6):

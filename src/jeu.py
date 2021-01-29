@@ -101,6 +101,8 @@ def run_game(jeu):
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 
+#https://www.dafont.com/mtheme.php?id=4
+
 class Jeu:
     def __init__(self, map_name):
         def run():
@@ -124,23 +126,28 @@ class Jeu:
         pg.init()      
         pg.display.set_caption("Le Wisher : Gérard Dérive")
 
+        p_font = get_path("resx/font/Seagram tfb.ttf")
         self.taille_case = 16        
         self.son_potion = pg.mixer.Sound(
             get_path('resx/bgm/potion.mp3'))
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
-        self.font = pg.font.SysFont("Comic Sans MS", 16)
+        self.font = pg.font.Font(p_font, 16)
         self.comment = self.font.render("Trouvez l'objet caché !", True, (0, 0, 0))
         sx, sy = 16 * self.taille_x, 16*self.taille_y + 100
         self.screen = pg.display.set_mode(
             (sx, sy))
 
+        mytheme = pgm.themes.THEME_DARK.copy()
+        mytheme.title_font = p_font
+        mytheme.widget_font = p_font
         menu = pgm.Menu(300, 400, 'LE WISHER',
-                       theme=pgm.themes.THEME_DARK)
+                       theme=mytheme)
         menu.add_text_input('Nom :', default='', onchange=set_nom)
         #menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)        
         menu.add_button('Jouer', run)
         menu.add_button('Quitter', pgm.events.EXIT)
+        #menu.set_font(self.font)
         menu.mainloop(self.screen)
 
         self.son_potion = pg.mixer.Sound(
