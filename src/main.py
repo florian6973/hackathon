@@ -85,6 +85,14 @@ def main():
                     for ennemi in ennemis:
                         if ennemi.fight:
                             player.combat(ennemi)
+                elif event.key == pg.K_a:
+                    player.use_object("force")
+                elif event.key == pg.K_m:
+                    player.use_object("mana")
+                elif event.key == pg.K_d:
+                    player.use_object("defense")
+                elif event.key == pg.K_v:
+                    player.use_object("vie")
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 
