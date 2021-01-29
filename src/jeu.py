@@ -44,15 +44,18 @@ class Jeu:
             "Attaque = " + str(player.damage), True, (0, 0, 0))
         text_defense = self.font.render(
             "Defense = " + str(player.defense), True, (0, 0, 0))
+        text_mana = self.font.render(
+            "Mana = " + str(player.mana), True, (0, 0, 0))
         self.screen.blit(
             text_vie, [10, self.taille_y * self.taille_case + 20, 16, 16])
         self.screen.blit(
-            text_money, [200, self.taille_y * self.taille_case + 20, 16, 16])
+            text_money, [150, self.taille_y * self.taille_case + 20, 16, 16])
         self.screen.blit(
-            text_damage, [400, self.taille_y * self.taille_case + 20, 16, 16])
+            text_damage, [300, self.taille_y * self.taille_case + 20, 16, 16])
         self.screen.blit(
-            text_defense, [600, self.taille_y * self.taille_case + 20, 16, 16])
-
+            text_defense, [450, self.taille_y * self.taille_case + 20, 16, 16])
+        self.screen.blit(
+            text_mana, [600, self.taille_y * self.taille_case + 20, 16, 16])
         for i in range(self.taille_y):
             for j in range(self.taille_x):
                 for img in self.map.get_tile(i, j):
