@@ -2,12 +2,13 @@ import numpy as np
 import pygame as pg
 from map import Map
 import character
+
 class Jeu:
-    def __init__(self):
+    def __init__(self, map_name):
         self.taille_x = 50
         self.taille_y = 25
         self.map = Map(self.taille_x, self.taille_y)
-        self.map.load("map0.rg")
+        self.map.load(map_name)
         
         pg.init()
         pg.display.set_caption("minimal program")

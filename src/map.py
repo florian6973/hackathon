@@ -1,9 +1,11 @@
 import numpy as np
 import os
-import utils
 import random as rd
 import pygame as pg
 import sys
+
+import utils
+from utils import *
 
 class Map:
     def __init__(self, tx, ty):
@@ -15,12 +17,12 @@ class Map:
         self.superposes = ['!', '+']
 
         folder_img = 'resx/imgs/'
-        self.textures = {'-': pg.image.load(utils.get_path(folder_img + 'wall.png')),
-                         '|': pg.image.load(utils.get_path(folder_img + 'wall.png')),
-                         '!': pg.image.load(utils.get_path(folder_img + 'defpotion.png')),
-                         '+' : pg.image.load(utils.get_path(folder_img + 'door.png')),
-                         '#' : pg.image.load(utils.get_path(folder_img + 'corridor.png')),
-                         '.' : pg.image.load(utils.get_path(folder_img + 'sol.png')),
+        self.textures = {'-': pg.image.load(get_path(folder_img + 'wall.png')),
+                         '|': pg.image.load(get_path(folder_img + 'wall.png')),
+                         '!': pg.image.load(get_path(folder_img + 'defpotion.png')),
+                         '+' : pg.image.load(get_path(folder_img + 'door.png')),
+                         '#' : pg.image.load(get_path(folder_img + 'corridor.png')),
+                         '.' : pg.image.load(get_path(folder_img + 'sol.png')),
                          '¤' : pg.image.load(utils.get_path(folder_img + 'void.png'))}
 
     def get_tile(self, i, j):
@@ -44,6 +46,7 @@ class Map:
         if seed != None:
             rd.seed(seed)
         ty, tx= self.map.shape
+        cases = []
         def valid_pos():            
             dep_x = rd.randrange(1, tx-2) # pas sur le bord
             dep_y = rd.randrange(1, ty-2) # en bas case pas vide
@@ -52,26 +55,27 @@ class Map:
             else:
                 return valid_pos()
         self.map = np.full((ty, tx), "¤", dtype='U1')
-        nb_rooms = rd.randint(1,8)
+        nb_rooms = rd.randint(1,12)
         col = []
         for _ in range(nb_rooms):
             i,j = valid_pos()
             self.map[i,j] = '.'
             #pièce carrée
-            taille = min(rd.randint(3,8),ty-i, tx-j)
+            taille = min(rd.randint(3,9),ty-i, tx-j)
             borders = []
             for ib in range(i, i+taille):
                 for jb in range(j ,j+taille):
                     if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1))): # ((0 < ib < (ty-1)) and (0 < (jb) < (tx-1))) and 
                         self.map[ib,jb] = '.'
+                        cases.append((ib,jb))
                     else:
                     #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
                         self.map[ib,jb] = '-'
                         #if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1)))
                         if (not ((ib == i) and (jb == j))
-                        and not ((ib==i) and (jb==(i+taille-1)))
+                        and not ((ib==i) and (jb==(j+taille-1)))
                         and not ((ib==(i+taille-1)) and (jb==j)) 
-                        and not ((ib==(i+taille-1)) and (jb==(i+taille-1)))):
+                        and not ((ib==(i+taille-1)) and (jb==(j+taille-1)))):
                             borders.append((ib,jb))
                         #faire la bonne taille pour simplifier...
                     #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))): 
@@ -80,13 +84,33 @@ class Map:
                     #    self.map[ib,jb] = '-'
             col.append(borders)
 
+        locs = []
         for e in col:
-            self.map[e[rd.randrange(0, len(e))]] = '+'
+            locs.append(e[rd.randrange(0, len(e))])
+            self.map[locs[-1]] = '+'
+
+        k = len(locs)
+        for i in range(k):
+            for j in range(k):
+                if i != j:
+                    try:
+                        print(locs[i], "->", locs[j])
+                        p = find_path(self.map, locs[i], locs[j])
+                        #print(p)
+                        for e in p[1:-1]:
+                            self.map[e] = '#'
+                    except:
+                        print('err')
         
+        ind = rd.randrange(0, len(cases))
+        self.map[cases[ind]] = '@'
+        del cases[ind]
 
 
 
-        print(self.map)
+
+
+        #print(self.map)
         
 
 ## arobase 
@@ -96,11 +120,14 @@ def test_map():
     m = Map(50, 25) # incohérent
     m.load("map0.rg")
     #print(Map.get_img(m.map[2,3]))
-    print(m.map)
-    print(m.get_tile(2,3))
+    #print(m.map)
+    #print(m.get_tile(2,3))
     m.generate()
 
+
     m.save("map1.rg")
+
+
 
 if (len(sys.argv) == 2):
     test_map()
