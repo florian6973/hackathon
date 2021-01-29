@@ -53,6 +53,7 @@ def main():
         if player.alive:
             player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
             player.move(jeu.taille_case)
+            player.get_potion(jeu.map.map[player.coordonnees_y, player.coordonnees_x])
         # event handling, gets all event from the event queue
         for event in pg.event.get():
             # only do something if the event is of type QUIT
