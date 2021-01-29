@@ -12,7 +12,7 @@ class Map:
         self.__encoding__ = 'UTF-8'
         self.__delimiter__ = ' '
         self.__comment__ = '§'
-        self.superposes = ['!']
+        self.superposes = ['!', '+']
 
         folder_img = 'resx/imgs/'
         self.textures = {'-': pg.image.load(utils.get_path(folder_img + 'wall.png')),
@@ -68,8 +68,11 @@ class Map:
                     #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
                         self.map[ib,jb] = '-'
                         #if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1)))
-                        
-                        borders.append((ib,jb))
+                        if (not ((ib == i) and (jb == j))
+                        and not ((ib==i) and (jb==(i+taille-1)))
+                        and not ((ib==(i+taille-1)) and (jb==j)) 
+                        and not ((ib==(i+taille-1)) and (jb==(i+taille-1)))):
+                            borders.append((ib,jb))
                         #faire la bonne taille pour simplifier...
                     #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))): 
                     #    self.map[ib,jb] = '-'
