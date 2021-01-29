@@ -3,6 +3,7 @@ import os
 import utils
 import random as rd
 import pygame as pg
+import sys
 
 class Map:
     def __init__(self, tx, ty):
@@ -50,7 +51,7 @@ class Map:
             i,j = valid_pos()
             self.map[i,j] = '.'
             #pièce carrée
-            taille = rd.randint(3,8)
+            taille = min(rd.randint(3,8),ty-i, tx-j)
             borders = []
             for ib in range(i, i+taille):
                 for jb in range(j ,j+taille):
@@ -59,7 +60,7 @@ class Map:
                     elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
                         self.map[ib,jb] = '-'
                         #if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1)))
-                        #borders.append((ib,jb))
+                        borders.append((ib,jb))
                         #faire la bonne taille pour simplifier...
                     #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))): 
                     #    self.map[ib,jb] = '-'
@@ -85,8 +86,9 @@ def test_map():
     #print(Map.get_img(m.map[2,3]))
     print(m.map)
     print(m.get_tile(2,3))
-    #m.generate()
+    m.generate()
 
     m.save("map1.rg")
 
-test_map()
+if (len(sys.argv) == 2):
+    test_map()
