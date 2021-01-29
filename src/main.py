@@ -85,7 +85,7 @@ def main():
                     for ennemi in ennemis:
                         if ennemi.fight:
                             player.combat(ennemi)
-                elif event.key == pg.K_a:
+                elif event.key == pg.K_f:
                     player.use_object("force")
                 elif event.key == pg.K_m:
                     player.use_object("mana")
