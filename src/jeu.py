@@ -31,7 +31,7 @@ class Jeu:
             (16 * self.taille_x, 16*self.taille_y + 100))
         self.taille_case = 16
         
-
+        self.comment = "RAS"
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
         #self.potion = self.map.textures['!']
@@ -75,6 +75,9 @@ class Jeu:
             text_potion2, [300, self.taille_y * self.taille_case + 50, 16, 16])
         self.screen.blit(
             text_potion3, [450, self.taille_y * self.taille_case + 50, 16, 16])
+        self.screen.blit(
+            self.font.render(
+            self.comment, True, (0, 0, 0)), [10, self.taille_y * self.taille_case + 80, 16, 16])
         for i in range(self.taille_y):
             for j in range(self.taille_x):
                 for img in self.map.get_tile(i, j):
