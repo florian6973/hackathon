@@ -33,7 +33,7 @@ class Map:
             raise Exception("Unknown char")
 
     def get_tile(self, i, j):
-        return Map.get_img(m.map[i,j])
+        return Map.get_img(self.map[i,j])
 
 
     def load(self, name):
