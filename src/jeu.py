@@ -2,12 +2,17 @@ import numpy as np
 import pygame as pg
 from map import Map
 import character
+import os
+from utils import get_path
 class Jeu:
-    def __init__(self):
+    def __init__(self, map_name):
         self.taille_x = 50
         self.taille_y = 25
         self.map = Map(self.taille_x, self.taille_y)
-        self.map.load("map0.rg")
+        self.map.load(map_name)
+        icone = pg.image.load("resx/imgs/icon.png")
+
+        pg.display.set_icon(icone)
         
         pg.init()
         pg.display.set_caption("Le Wisher : Gérard Dérive")
@@ -17,7 +22,6 @@ class Jeu:
         self.son_attaque_gerard = pg.mixer.Sound(utils.get_path('resx/bgm/swordhit.wav'))
     def afficher(self, player, ennemi):
         pg.draw.rect(self.screen, (255,255,255), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case + 100))
-        
         text_vie = self.font.render("Vie = " + str(player.life), True, (0,0,0))
         text_money = self.font.render("Argent = " + str(player.money), True, (0,0,0))
         text_damage = self.font.render("Attaque = " + str(player.damage), True, (0,0,0))

@@ -2,11 +2,16 @@ import pygame as pg
 import utils
 from jeu import Jeu
 from character import *
+import sys
 
-def main():    
+def main():
+    map_n = "map0.rg"    
+    if len(sys.argv) >= 2:
+        map_n = sys.argv[1]
+
     player = Player("Robin")
-    jeu = Jeu()
-    ennemi = Evil("JE", 7, 1, 3, 3)
+    jeu = Jeu(map_n)
+    ennemi = Evil("JE", 7, 2, 3, 3)
     player.rect.x = jeu.taille_case
     player.rect.y = jeu.taille_case
 
