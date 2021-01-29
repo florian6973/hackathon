@@ -33,6 +33,12 @@ def main():
                 player.attaque = False
                 jeu.son_attaque_gerard.stop()
                 player.indice_animation = 0
+        if ennemi.attaque:
+            ennemi.indice_animation += 1
+            if ennemi.indice_animation == len(ennemi.images) - 1:
+                ennemi.attaque = False
+                jeu.son_attaque_gerard.stop()
+                ennemi.indice_animation = 0
         jeu.afficher(player, ennemi)
         if player.alive:
             player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
