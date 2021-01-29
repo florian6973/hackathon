@@ -51,8 +51,11 @@ class Player:
             self.alive = False
 
     def combat(self, evil):
-        while self.life > 0 and evil.life > 0:
+        ecart_x = self.coordonnees_x - evil.coordonnees_x
+        ecart_y = self.coordonnees_y - evil.coordonnees_y
+        if (abs(ecart_x) == 1 and ecart_y == 0) or (ecart_x == 0 and abs(ecart_y) == 1):
             evil.receive_damage(self)
+
             if evil.alive:
                 self.receive_damage(evil)
 
@@ -127,28 +130,29 @@ class Evil:
         if (ecart_x == 0 and abs(ecart_y) == 1) or (abs(ecart_x) == 1 and ecart_y == 0):
             self.fight = True
 
-        if (abs(ecart_x) < 5 and abs(ecart_y)) < 5 and not self.fight:
-            directions_possibles = []
-            directions_associees = [(1, 0), (-1, 0), (0, -1), (0, 1)]
-            for pos, tile in enumerate(next_tiles):
-                if tile not in ['-', '|', '¤']:
-                    directions_possibles.append(directions_associees[pos])
+        if self.alive == True:
+            if (abs(ecart_x) < 5 and abs(ecart_y)) < 5 and not self.fight:
+                directions_possibles = []
+                directions_associees = [(1, 0), (-1, 0), (0, -1), (0, 1)]
+                for pos, tile in enumerate(next_tiles):
+                    if tile not in ['-', '|', '¤']:
+                        directions_possibles.append(directions_associees[pos])
 
-            if abs(ecart_y) < abs(ecart_x):
-                if ecart_x < 0 and (1, 0) in directions_possibles:
-                    self.direction = (1, 0)
-                elif ecart_x > 0 and (-1, 0) in directions_possibles:
-                    self.direction = (-1, 0)
-            else:
-                if ecart_y > 0 and (0, -1) in directions_possibles:
-                    self.direction = (0, -1)
-                elif ecart_y < 0 and (0, 1) in directions_possibles:
-                    self.direction = (0, 1)
-            self.coordonnees_x += self.direction[0]
-            self.coordonnees_y += self.direction[1]
-            self.rect.x += self.direction[0]*size
-            self.rect.y += self.direction[1]*size
-            self.direction = (0, 0)
+                if abs(ecart_y) < abs(ecart_x):
+                    if ecart_x < 0 and (1, 0) in directions_possibles:
+                        self.direction = (1, 0)
+                    elif ecart_x > 0 and (-1, 0) in directions_possibles:
+                        self.direction = (-1, 0)
+                else:
+                    if ecart_y > 0 and (0, -1) in directions_possibles:
+                        self.direction = (0, -1)
+                    elif ecart_y < 0 and (0, 1) in directions_possibles:
+                        self.direction = (0, 1)
+                self.coordonnees_x += self.direction[0]
+                self.coordonnees_y += self.direction[1]
+                self.rect.x += self.direction[0]*size
+                self.rect.y += self.direction[1]*size
+                self.direction = (0, 0)
 
 
 class Marchand:
