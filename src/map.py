@@ -9,7 +9,7 @@ class Map:
         self.map = np.full((ty, tx), " ", dtype='S1') #ne pas inverser
 
     def load(self, name):
-        self.map = np.genfromtxt(utils.get_path('resx/maps/' + name))
+        self.map = np.genfromtxt(utils.get_path('resx/maps/' + name))        
         print(f"Map {name} loaded")        
 
     def save(self):
