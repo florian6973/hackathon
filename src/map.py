@@ -30,9 +30,11 @@ class Map:
         if self.map[i,j] in self.textures:
             t = self.textures[self.map[i,j]]
             if self.map[i,j] in self.superposes:
-                return [self.textures['.'],t]
+                return [self.textures['.'], t]
             else:
                 return [t]
+        elif self.map[i,j] == '@':
+            return [self.textures['.']]
         else:
             return [self.textures['¤']]
 
@@ -55,7 +57,7 @@ class Map:
         def valid_pos():            
             j = rd.randrange(1, tx-2) # pas sur le bord
             i = rd.randrange(1, ty-2) # en bas case pas vide
-            taille = min(rd.randint(3,9),ty-i, tx-j)
+            taille = min(rd.randint(3,7),ty-i, tx-j)
 
             recouvrement = False
             for ib in range(i, i+taille):
@@ -69,7 +71,7 @@ class Map:
                 return valid_pos()
 
 
-        nb_rooms = rd.randint(5,12)
+        nb_rooms = rd.randint(7,14)
         col = []
         for _ in range(nb_rooms):
             i,j, taille = valid_pos()
@@ -116,15 +118,17 @@ class Map:
         
         # personnages, potions, gobelins
 
-        def ajouter_elem(elem, max_i=6):
-            nb_potions = rd.randint(1, max_i)
+        def ajouter_elem(elem, min_i=1, max_i=6):
+            nb_potions = rd.randint(min_i, max_i)
             for _ in range(nb_potions):
                 ind = rd.randrange(0, len(cases))
                 self.map[cases[ind]] = elem
                 del cases[ind]
+                if (len(cases) == 0):
+                    break
 
-        ajouter_elem('@', 1)
+        ajouter_elem('@', 1, 1)
         ajouter_elem('!')
-        ajouter_elem('&')    
+        ajouter_elem('&', 2, 10)    
 
         print("Map generated")   

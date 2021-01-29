@@ -10,12 +10,16 @@ def main():
     if len(sys.argv) >= 2:
         map_n = sys.argv[1]
 
-    jeu = Jeu(map_n)        
+    jeu = Jeu(map_n)     
+
     x,y=list(zip(*np.where(jeu.map.map == '@')))[0][::-1]
     player = Player("Robin", pos=(x,y))
-    x,y=list(zip(*np.where(jeu.map.map == '&')))[0][::-1]
-    ennemi = Evil("JE", 7, 2, x,y)
-
+    
+    gobs =list(zip(*np.where(jeu.map.map == '&')))#[0][::-1]
+    ennemis = []
+    for i, g in enumerate(gobs):
+        x, y = g[::-1]
+        ennemis.append(Evil("Gobelin " + str(i), 7, 2, x, y))
         
     MUSIC = utils.get_path('resx/bgm/wishertheme.mp3')
     pg.mixer.init()
