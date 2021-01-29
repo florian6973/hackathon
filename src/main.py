@@ -4,6 +4,7 @@ from jeu import Jeu
 from character import *
 
 MUSIC = utils.get_path('resx/bgm/Powerwolf.mp3')
+pg.mixer.init()
 pg.mixer.music.load(MUSIC)
 pg.mixer.music.set_volume(3/10.)
 
