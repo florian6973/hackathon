@@ -39,7 +39,7 @@ class Map:
                 return [self.textures['.'], t]
             else:
                 return [t]
-        elif self.map[i,j] in ['@', '&']:
+        elif self.map[i,j] in ['@', '&', 'C']:
             return [self.textures['.']]
         else:
             return [self.textures['¤']]
@@ -133,6 +133,7 @@ class Map:
                     break
 
         ajouter_elem('@', 1, 1)
+        ajouter_elem('C', 1, 1)
         ajouter_elem('v',1,3)
         ajouter_elem('a',1,3)
         ajouter_elem('d',1,3)

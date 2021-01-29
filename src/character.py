@@ -27,12 +27,14 @@ class Player:
         self.indice_animation = 0
         self.attaque = False
         self.direction = (0, 0)
+        self.orientation_bas_haut = 'bas'
         self.orientation = 'droite'
         self.rect.x = 16*x
         self.rect.y = 16*y
         self.coordonnees_x = x
         self.coordonnees_y = y
         self.mana = mana
+        self.vitoire = False
 
     def move(self, size):
         if self.direction[0] != 0:
@@ -75,6 +77,8 @@ class Player:
         elif tile == '€':
             self.money += 1
             return True
+        elif tile == 'C':
+            self.victory = True
         return False
 
     def fireball(self):
@@ -116,7 +120,7 @@ class Player:
             stuff, cost = object
             marchand.remove_object(object)
             if self.money >= cost:
-                self.inventory[object] += 1
+                self.inventory[stuff] += 1
                 self.money -= cost
 
     def __repr__(self):
