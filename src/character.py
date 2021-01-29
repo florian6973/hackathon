@@ -100,7 +100,7 @@ class Player:
 
     def use_object(self, object):
 
-        if object in self.inventory:
+        if self.inventory[object] > 0:
             self.inventory[object] -= 1
             if object == 'vie':
                 self.life += 10
@@ -116,7 +116,7 @@ class Player:
             stuff, cost = object
             marchand.remove_object(object)
             if self.money >= cost:
-                self.inventory.append(stuff)
+                self.inventory[object] += 1
                 self.money -= cost
 
     def __repr__(self):
