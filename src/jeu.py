@@ -27,6 +27,8 @@ class Jeu:
         self.screen = pg.display.set_mode(
             (16 * self.taille_x, 16*self.taille_y + 100))
         self.taille_case = 16
+        
+
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
         self.potion = self.map.textures['!']
