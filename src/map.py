@@ -15,6 +15,8 @@ class Map:
 
         folder_img = 'resx/imgs/'
         self.textures = {'-': pg.image.load(utils.get_path(folder_img + 'wall.png')),
+                         '|': pg.image.load(utils.get_path(folder_img + 'wall.png')),
+                         '!': pg.image.load(utils.get_path(folder_img + 'defpotion.png')),
                          '+' : pg.image.load(utils.get_path(folder_img + 'door.png')),
                          '#' : pg.image.load(utils.get_path(folder_img + 'corridor.png')),
                          '.' : pg.image.load(utils.get_path(folder_img + 'sol.png')),
@@ -22,9 +24,13 @@ class Map:
 
     def get_tile(self, i, j):
         if self.map[i,j] in self.textures:
-            return self.textures[self.map[i,j]]
+            t = self.textures[self.map[i,j]]
+            if self.map[i,j] in self.superposes:
+                return [self.textures['.'],t]
+            else:
+                return [t]
         else:
-            return self.textures['¤']
+            return [self.textures['¤']]
 
     def load(self, name):
         self.map = np.genfromtxt(utils.get_path(self.__folder__ + name), delimiter=self.__delimiter__, dtype='U1', comments=self.__comment__, encoding=self.__encoding__)
@@ -55,11 +61,13 @@ class Map:
             borders = []
             for ib in range(i, i+taille):
                 for jb in range(j ,j+taille):
-                    if ((0 < ib < (ty-1)) and (0 < (jb) < (tx-1))) and ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1))):
+                    if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1))): # ((0 < ib < (ty-1)) and (0 < (jb) < (tx-1))) and 
                         self.map[ib,jb] = '.'
-                    elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
+                    else:
+                    #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
                         self.map[ib,jb] = '-'
                         #if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1)))
+                        
                         borders.append((ib,jb))
                         #faire la bonne taille pour simplifier...
                     #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))): 
@@ -77,7 +85,7 @@ class Map:
         print(self.map)
         
 
-
+## arobase 
 
 def test_map():
     print("Running test_map")
