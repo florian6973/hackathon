@@ -18,7 +18,7 @@ class Map:
 
         folder_img = 'resx/imgs/'
         self.textures = {'-': pg.image.load(get_path(folder_img + 'wall.png')),
-                         '|': pg.image.load(get_path(folder_img + 'wall.png')),
+                         '|': pg.image.load(get_path(folder_img + 'wallside.png')),
                          '!': pg.image.load(get_path(folder_img + 'defpotion.png')),
                          '+' : pg.image.load(get_path(folder_img + 'door.png')),
                          '#' : pg.image.load(get_path(folder_img + 'corridor.png')),
@@ -129,5 +129,5 @@ def test_map():
 
 
 
-if (len(sys.argv) == 2):
+if (len(sys.argv) == 3):
     test_map()
