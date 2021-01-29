@@ -62,8 +62,16 @@ def main():
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_LEFT:
                     player.direction = (-1, 0)
+                    if player.orientation != "gauche":
+                        for i in range(len(player.images)):
+                            player.images[i] = pg.transform.flip(player.images[i], True, False)
+                        player.orientation = 'gauche'
                 elif event.key == pg.K_RIGHT:
                     player.direction = (1, 0)
+                    if player.orientation != 'droite':
+                        for i in range(len(player.images)):
+                            player.images[i] = pg.transform.flip(player.images[i], True, False)
+                        player.orientation = 'droite'
                 elif event.key == pg.K_UP:
                     player.direction = (0, -1)
                 elif event.key == pg.K_DOWN:
