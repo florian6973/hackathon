@@ -14,7 +14,7 @@ def main():
     while running:
         pg.time.wait(50)
         jeu.afficher(player)
-        player.rentrer_mur(jeu.map.map[player.rect.y//jeu.taille_case + player.direction[1], player.rect.x//jeu.taille_case + player.direction[0]])
+        player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnes_x + player.direction[0]])
 
         player.move(jeu.taille_case)
         # event handling, gets all event from the event queue
