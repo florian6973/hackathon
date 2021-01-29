@@ -47,9 +47,6 @@ class Player:
         if evil.damage - self.defense > 0:
             self.life -= evil.damage - self.defense
 
-        if self.life <= 0:
-            self.alive = False
-
     def combat(self, evil):
         ecart_x = self.coordonnees_x - evil.coordonnees_x
         ecart_y = self.coordonnees_y - evil.coordonnees_y
@@ -109,6 +106,7 @@ class Evil:
         self.coordonnees_x = x
         self.coordonnees_y = y
         self.fight = False
+        self.compteur = 0
 
     def receive_damage(self, player):
         self.life -= player.damage
@@ -126,9 +124,16 @@ class Evil:
         self.fight = False
         ecart_x = self.coordonnees_x - player.coordonnees_x
         ecart_y = self.coordonnees_y - player.coordonnees_y
+        # print(self.compteur)
+        if self.compteur > 0:
+            self.compteur -= 1
 
         if (ecart_x == 0 and abs(ecart_y) == 1) or (abs(ecart_x) == 1 and ecart_y == 0):
             self.fight = True
+            if self.compteur == 0:
+                player.receive_damage(self)
+                self.compteur = 50
+                print(player.life)
 
         if self.alive == True:
             if (abs(ecart_x) < 5 and abs(ecart_y)) < 5 and not self.fight:
