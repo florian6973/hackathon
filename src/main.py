@@ -17,8 +17,8 @@ def main():
         jeu.afficher(player, ennemi)
         player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
         player.move(jeu.taille_case)
-        l = [jeu.map.map(ennemi.coordonnees_x + 1, ennemi_coordonnees_y), jeu.map.map(ennemi.coordonnees_x - 1, ennemi_coordonnees_y), jeu.map.map(ennemi.coordonnees_x, ennemi_coordonnees_y - 1), jeu.map.map(ennemi.coordonnees_x, ennemi_coordonnees_y + 1)]
-        ennemi.move(player, jeu.taille_case, l)
+        l = [jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x + 1], jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x - 1], jeu.map.map[ennemi.coordonnees_y - 1, ennemi.coordonnees_x], jeu.map.map[ennemi.coordonnees_y + 1, ennemi.coordonnees_x]]
+        #ennemi.move(player, jeu.taille_case, l)
 
         # event handling, gets all event from the event queue
         for event in pg.event.get():
