@@ -61,13 +61,13 @@ class Player:
 
     def get_potion(self, tile):
         if tile == 'v':
-            self.inventory[0] += 1
+            self.inventory['vie'] += 1
         elif tile == 'd':
-            self.inventory[1] += 1
+            self.inventory['defense'] += 1
         elif tile == 'm':
-            self.inventory[2] += 1
+            self.inventory['mana'] += 1
         elif tile == 'a':
-            self.inventory[3] += 1
+            self.inventory['force'] += 1
 
     def fireball(self):
         if self.mana >= 5:
@@ -93,7 +93,7 @@ class Player:
     def use_object(self, object):
 
         if object in self.inventory:
-            self.inventory.remove(object)
+            self.inventory[object] -= 1
             if object == 'vie':
                 self.life += 10
             if object == 'force':
@@ -168,7 +168,7 @@ class Evil:
                 self.compteur = 50
 
         if self.alive == True:
-            if (abs(ecart_x) < 5 and abs(ecart_y)) < 5 and not self.fight:
+            if (abs(ecart_x) < 2 and abs(ecart_y)) < 2 and not self.fight:
                 directions_possibles = []
                 directions_associees = [(1, 0), (-1, 0), (0, -1), (0, 1)]
                 for pos, tile in enumerate(next_tiles):
