@@ -12,21 +12,22 @@ def main():
     # main loop
     while running:
         jeu.afficher(player)
+        player.move(jeu.taille_case)
         # event handling, gets all event from the event queue
         for event in pg.event.get():
             # only do something if the event is of type QUIT
             if event.type == pg.QUIT:
                 # change the value to False, to exit the main loop
                 running = False
-            if event.type == pg.KEYDOWN:
+            elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_LEFT:
-                    player.rect.x -= jeu.taille_case
-                if event.key == pg.K_RIGHT:
-                    player.rect.x += jeu.taille_case
-                if event.key == pg.K_UP:
-                    player.rect.y -= jeu.taille_case
-                if event.key == pg.K_DOWN:
-                    player.rect.y += jeu.taille_case
+                    player.direction = (-1, 0)
+                elif event.key == pg.K_RIGHT:
+                    player.direction = (1, 0)
+                elif event.key == pg.K_UP:
+                    player.direction = (0, -1)
+                elif event.key == pg.K_DOWN:
+                    player.direction = (0, 1)
 
 
 
