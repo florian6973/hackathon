@@ -17,10 +17,12 @@ class Player:
         self.images = []
         for k in range(1, 9):
             if k != 5:
-                self.images.append(pg.image.load(get_path("resx/imgs/wisher" + str(k) + ".png")))
+                self.images.append(pg.image.load(
+                    get_path("resx/imgs/wisher" + str(k) + ".png")))
         for k in range(8, 0, -1):
             if k != 5:
-                self.images.append(pg.image.load(get_path("resx/imgs/wisher" + str(k) + ".png")))
+                self.images.append(pg.image.load(
+                    get_path("resx/imgs/wisher" + str(k) + ".png")))
         self.indice_animation = 0
         self.attaque = False
         self.direction = (0, 0)
@@ -28,7 +30,6 @@ class Player:
         self.rect.y = 16*y
         self.coordonnees_x = x
         self.coordonnees_y = y
-
 
     def move(self, size):
         if self.direction[0] != 0:
@@ -104,6 +105,7 @@ class Evil:
         self.direction = (0, 0)
         self.coordonnees_x = x
         self.coordonnees_y = y
+        self.fight = False
 
     def receive_damage(self, player):
         self.life -= player.damage
@@ -118,10 +120,14 @@ class Evil:
         return self.alive
 
     def move(self, player, size, next_tiles):
+        self.fight = False
         ecart_x = self.coordonnees_x - player.coordonnees_x
         ecart_y = self.coordonnees_y - player.coordonnees_y
-        print(ecart_x, ecart_y)
-        if abs(ecart_x) < 5 and abs(ecart_y) < 5:
+
+        if (ecart_x == 0 and abs(ecart_y) == 1) or (abs(ecart_x) == 1 and ecart_y == 0):
+            self.fight = True
+
+        if (abs(ecart_x) < 5 and abs(ecart_y)) < 5 and not self.fight:
             directions_possibles = []
             directions_associees = [(1, 0), (-1, 0), (0, -1), (0, 1)]
             for pos, tile in enumerate(next_tiles):
@@ -142,6 +148,7 @@ class Evil:
             self.coordonnees_y += self.direction[1]
             self.rect.x += self.direction[0]*size
             self.rect.y += self.direction[1]*size
+            self.direction = (0, 0)
 
 
 class Marchand:
