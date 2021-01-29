@@ -4,7 +4,7 @@ from utils import get_path
 
 
 class Player:
-    def __init__(self, name, life=15, damage=3, defense=1, money=5):
+    def __init__(self, name, life=15, damage=3, defense=1, money=5, x=1, y=1):
         self.name = name
         self.life = life
         self.inventory = []
@@ -14,11 +14,22 @@ class Player:
         self.money = money
         self.image = pg.image.load(get_path("resx/imgs/wisher.png"))
         self.rect = self.image.get_rect()
+        self.images = []
+        for k in range(1, 9):
+            if k != 5:
+                self.images.append(pg.image.load(
+                    get_path("resx/imgs/wisher" + str(k) + ".png")))
+        for k in range(8, 0, -1):
+            if k != 5:
+                self.images.append(pg.image.load(
+                    get_path("resx/imgs/wisher" + str(k) + ".png")))
+        self.indice_animation = 0
+        self.attaque = False
         self.direction = (0, 0)
-        self.rect.x = 16
-        self.rect.y = 16
-        self.coordonnees_x = 1
-        self.coordonnees_y = 1
+        self.rect.x = 16*x
+        self.rect.y = 16*y
+        self.coordonnees_x = x
+        self.coordonnees_y = y
 
     def move(self, size):
         if self.direction[0] != 0:
@@ -40,8 +51,11 @@ class Player:
             self.alive = False
 
     def combat(self, evil):
-        while self.life > 0 and evil.life > 0:
+        ecart_x = self.coordonnees_x - evil.coordonnees_x
+        ecart_y = self.coordonnees_y - evil.coordonnees_y
+        if (abs(ecart_x) == 1 and ecart_y == 0) or (ecart_x == 0 and abs(ecart_y) == 1):
             evil.receive_damage(self)
+
             if evil.alive:
                 self.receive_damage(evil)
 
@@ -90,10 +104,11 @@ class Evil:
         self.alive = True
         self.image = pg.image.load(get_path("resx/imgs/goblin.png"))
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = x, y
+        self.rect.x, self.rect.y = x*16, y*16
         self.direction = (0, 0)
-        self.coordonnees_x = 4
-        self.coordonnees_y = 4
+        self.coordonnees_x = x
+        self.coordonnees_y = y
+        self.fight = False
 
     def receive_damage(self, player):
         self.life -= player.damage
@@ -107,18 +122,37 @@ class Evil:
     def is_alive(self):
         return self.alive
 
-    def move(self, player, size):
-        ecart_x = self.rect.x - player.rect[0]
-        ecart_y = self.rect.y - player.rect[1]
-        if abs(ecart_x) < 5 and abs(ecart_y) < 5:
-            direction_possible = []
+    def move(self, player, size, next_tiles):
+        self.fight = False
+        ecart_x = self.coordonnees_x - player.coordonnees_x
+        ecart_y = self.coordonnees_y - player.coordonnees_y
 
-            if ecart_y < ecart_x:
-                if ecart_x < 0:
-                    self.direction = (-1, 0)
+        if (ecart_x == 0 and abs(ecart_y) == 1) or (abs(ecart_x) == 1 and ecart_y == 0):
+            self.fight = True
+
+        if self.alive == True:
+            if (abs(ecart_x) < 5 and abs(ecart_y)) < 5 and not self.fight:
+                directions_possibles = []
+                directions_associees = [(1, 0), (-1, 0), (0, -1), (0, 1)]
+                for pos, tile in enumerate(next_tiles):
+                    if tile not in ['-', '|', '¤']:
+                        directions_possibles.append(directions_associees[pos])
+
+                if abs(ecart_y) < abs(ecart_x):
+                    if ecart_x < 0 and (1, 0) in directions_possibles:
+                        self.direction = (1, 0)
+                    elif ecart_x > 0 and (-1, 0) in directions_possibles:
+                        self.direction = (-1, 0)
                 else:
-                    self.direction = (1, 0)
-            self.rect.y = y
+                    if ecart_y > 0 and (0, -1) in directions_possibles:
+                        self.direction = (0, -1)
+                    elif ecart_y < 0 and (0, 1) in directions_possibles:
+                        self.direction = (0, 1)
+                self.coordonnees_x += self.direction[0]
+                self.coordonnees_y += self.direction[1]
+                self.rect.x += self.direction[0]*size
+                self.rect.y += self.direction[1]*size
+                self.direction = (0, 0)
 
 
 class Marchand:

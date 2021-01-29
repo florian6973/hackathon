@@ -1,6 +1,8 @@
 import pygame as pg
+import utils
 from jeu import Jeu
 from character import *
+import sys
 
 def main():
     map_n = "map0.rg"    
@@ -9,18 +11,33 @@ def main():
 
     player = Player("Robin")
     jeu = Jeu(map_n)
+    ennemi = Evil("JE", 7, 2, 3, 3)
     player.rect.x = jeu.taille_case
     player.rect.y = jeu.taille_case
-    
+
+        
+    MUSIC = utils.get_path('resx/bgm/Lazare.mp3')
+    pg.mixer.init()
+    pg.mixer.music.load(MUSIC)
+    pg.mixer.music.set_volume(3/10.)
+    pg.mixer.music.play(-1)
+        
     running = True
      
     # main loop
     while running:
         pg.time.wait(50)
-        jeu.afficher(player)
-        player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnes_x + player.direction[0]])
-
+        if player.attaque:
+            player.indice_animation += 1
+            if player.indice_animation == len(player.images) - 1:
+                player.attaque = False
+                player.indice_animation = 0
+        jeu.afficher(player, ennemi)
+        player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
         player.move(jeu.taille_case)
+        l = [jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x + 1], jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x - 1], jeu.map.map[ennemi.coordonnees_y - 1, ennemi.coordonnees_x], jeu.map.map[ennemi.coordonnees_y + 1, ennemi.coordonnees_x]]
+        ennemi.move(player, jeu.taille_case, l)
+
         # event handling, gets all event from the event queue
         for event in pg.event.get():
             # only do something if the event is of type QUIT
@@ -36,6 +53,9 @@ def main():
                     player.direction = (0, -1)
                 elif event.key == pg.K_DOWN:
                     player.direction = (0, 1)
+                elif event.key == pg.K_SPACE and not player.attaque:
+                    player.attaque = True
+                    player.combat(ennemi)
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 
