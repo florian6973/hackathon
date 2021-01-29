@@ -198,5 +198,7 @@ class Jeu:
             if ennemi.alive:
                 self.screen.blit(
                     ennemi.images[ennemi.indice_animation], ennemi.rect)
+        if fireball.afficher:
+            self.screen.blit(fireball.image, fireball.rect)
 
         pg.display.flip()
