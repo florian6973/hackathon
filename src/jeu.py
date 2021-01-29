@@ -30,8 +30,10 @@ class Jeu:
             for j in range(self.taille_x):
                 for img in self.map.get_tile(i, j):
                     self.screen.blit(img, (self.taille_case * j , self.taille_case *i ))
-        self.screen.blit(player.images[player.indice_animation], player.rect)
-        self.screen.blit(ennemi.image, ennemi.rect)
+        if player.alive:
+            self.screen.blit(player.images[player.indice_animation], player.rect)
+        if ennemi.alive:
+            self.screen.blit(ennemi.image, ennemi.rect)
         
         pg.display.flip()
 

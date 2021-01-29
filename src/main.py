@@ -6,7 +6,7 @@ from character import *
 def main():    
     player = Player("Robin")
     jeu = Jeu()
-    ennemi = Evil("JE", 100, 1, 3, 3)
+    ennemi = Evil("JE", 7, 1, 3, 3)
     player.rect.x = jeu.taille_case
     player.rect.y = jeu.taille_case
 
@@ -48,8 +48,9 @@ def main():
                     player.direction = (0, -1)
                 elif event.key == pg.K_DOWN:
                     player.direction = (0, 1)
-                elif event.key == pg.K_SPACE:
+                elif event.key == pg.K_SPACE and not player.attaque:
                     player.attaque = True
+                    player.combat(ennemi)
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 
