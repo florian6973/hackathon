@@ -16,15 +16,17 @@ class Jeu:
         self.taille_case = 16
     def afficher(self, player, ennemi):
         pg.draw.rect(self.screen, (255,255,255), (0, 0, self.taille_x * self.taille_case, self.taille_y * self.taille_case + 100))
-        text_vie = self.font.render(player.life, True, (0,0,0))
-        text_money = self.font.render(player.money, True, (0,0,0))
-        text_damage = self.font.render(player.damage, True, (0,0,0))
-        text_defense = self.font.render(player.defense, True, (0,0,0))
+        
+        text_vie = self.font.render(str(player.life), True, (0,0,0))
+        text_money = self.font.render(str(player.money), True, (0,0,0))
+        text_damage = self.font.render(str(player.damage), True, (0,0,0))
+        text_defense = self.font.render(str(player.defense), True, (0,0,0))
+
         for i in range(self.taille_y):
             for j in range(self.taille_x):
                 for img in self.map.get_tile(i, j):
                     self.screen.blit(img, (self.taille_case * j , self.taille_case *i ))
-        self.screen.blit(player.image, player.rect)
+        self.screen.blit(player.images[player.indice_animation], player.rect)
         self.screen.blit(ennemi.image, ennemi.rect)
         
         pg.display.flip()

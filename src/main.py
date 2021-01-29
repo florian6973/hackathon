@@ -19,6 +19,11 @@ def main():
     # main loop
     while running:
         pg.time.wait(50)
+        if player.attaque:
+            player.indice_animation += 1
+            if player.indice_animation == len(player.images) - 1:
+                player.attaque = False
+                player.indice_animation = 0
         jeu.afficher(player, ennemi)
         player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
         player.move(jeu.taille_case)
@@ -41,6 +46,8 @@ def main():
                     player.direction = (0, -1)
                 elif event.key == pg.K_DOWN:
                     player.direction = (0, 1)
+                elif event.key == pg.K_SPACE:
+                    player.attaque = True
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 
