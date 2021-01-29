@@ -125,17 +125,17 @@ class Jeu:
         pg.display.set_caption("Le Wisher : Gérard Dérive")
 
         self.taille_case = 16        
-        self.comment = "Trouvez l'objet caché !"
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
         self.font = pg.font.SysFont("Comic Sans MS", 16)
+        self.comment = self.font.render("Trouvez l'objet caché !", True, (0, 0, 0))
         sx, sy = 16 * self.taille_x, 16*self.taille_y + 100
         self.screen = pg.display.set_mode(
             (sx, sy))
 
         menu = pgm.Menu(300, 400, 'LE WISHER',
                        theme=pgm.themes.THEME_DARK)
-        menu.add_text_input('Nom :', default='Gérard', onchange=set_nom)
+        menu.add_text_input('Nom :', default='', onchange=set_nom)
         #menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)        
         menu.add_button('Jouer', run)
         menu.add_button('Quitter', pgm.events.EXIT)
