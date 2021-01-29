@@ -92,7 +92,8 @@ class Evil:
         self.rect = self.image.get_rect()
         self.rect.x, self.rect.y = x, y
         self.direction = (0, 0)
-        self.
+        self.coordonnees_x = 4
+        self.coordonnees_y = 4
 
     def receive_damage(self, player):
         self.life -= player.damage
@@ -106,7 +107,7 @@ class Evil:
     def is_alive(self):
         return self.alive
 
-    def move(self, player):
+    def move(self, player, size):
         ecart_x = self.rect.x - player.rect[0]
         ecart_y = self.rect.y - player.rect[1]
         if abs(ecart_x) < 5 and abs(ecart_y) < 5:
