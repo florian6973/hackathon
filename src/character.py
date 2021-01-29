@@ -4,8 +4,8 @@ from utils import get_path
 
 
 class Player:
-    def __init__(self, name, life=15, damage=3, defense=1, money=5, pos=(1,1)):
-        x,y=pos
+    def __init__(self, name, life=15, damage=3, defense=1, money=5, pos=(1, 1), mana=15):
+        x, y = pos
         self.name = name
         self.life = life
         self.inventory = []
@@ -31,6 +31,7 @@ class Player:
         self.rect.y = 16*y
         self.coordonnees_x = x
         self.coordonnees_y = y
+        self.mana = mana
 
     def move(self, size):
         if self.direction[0] != 0:
@@ -74,13 +75,14 @@ class Player:
 
         if object in self.inventory:
             self.inventory.remove(object)
-            name, strength = object.split(' ')
-            if name == 'vie':
-                self.life += int(strength)
-            if name == 'force':
-                self.damage += int(strength)
-            if name == 'defense':
-                self.defense += int(strength)
+            if object == 'vie':
+                self.life += 10
+            if object == 'force':
+                self.damage += 2
+            if object == 'defense':
+                self.defense += 1
+            if object == 'mana':
+                self.mana += 5
 
     def buy_object(self, marchand, object):
         if object in marchand.objects:
