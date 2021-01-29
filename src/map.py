@@ -6,11 +6,11 @@ import utils
 
 class Map:
     def __init__(self, tx, ty):
-        self.map = np.full((ty, tx), " ", dtype='S1') #ne pas inverser
+        self.map = np.full((ty, tx), " ", dtype='U1') #ne pas inverser
 
     def load(self, name):
-        self.map = np.genfromtxt(utils.get_path('resx/maps/' + name))        
-        print(f"Map {name} loaded")        
+        self.map = np.genfromtxt(utils.get_path('resx/maps/' + name), delimiter=' ', dtype='U1', comments='§', encoding='UTF-8')
+        print(f"Map {name} loaded (shape {self.map.shape})")        
 
     def save(self):
         pass
