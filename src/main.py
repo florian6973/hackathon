@@ -26,6 +26,7 @@ def main():
             player.indice_animation += 1
             if player.indice_animation == len(player.images) - 1:
                 player.attaque = False
+                Jeu.son_attaque_gerard.stop()
                 player.indice_animation = 0
         jeu.afficher(player, ennemi)
         player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
@@ -50,6 +51,7 @@ def main():
                     player.direction = (0, 1)
                 elif event.key == pg.K_SPACE and not player.attaque:
                     player.attaque = True
+                    Jeu.son_attaque_gerard.play()
                     player.combat(ennemi)
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
