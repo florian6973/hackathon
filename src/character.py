@@ -1,6 +1,7 @@
 import os
 import pygame as pg
 from utils import get_path
+from fireball import Fireball
 
 
 class Player:
@@ -84,10 +85,8 @@ class Player:
     def fireball(self):
         if self.mana >= 5:
             self.mana -= 5
-            if ball_direction == (0, 0):
-                ball_direction = (1, 0)
-            else:
-                ball_direction = self.direction
+            fireball = Fireball(
+                self.x, self.y, (self.orientation, self.orientation_bas_haut))
 
     def is_alive(self):
         return self.alive
