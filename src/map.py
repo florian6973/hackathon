@@ -6,6 +6,7 @@ import sys
 
 import utils
 from utils import *
+import time
 
 class Map:
     def __init__(self, tx, ty):
@@ -41,6 +42,7 @@ class Map:
 
     def save(self, name):
         np.savetxt(utils.get_path(self.__folder__ + name), self.map, fmt='%s', delimiter=self.__delimiter__, encoding=self.__encoding__)
+        print(f"Map {name} saved")
 
     def generate(self, seed=None):
         if seed != None:
@@ -79,74 +81,50 @@ class Map:
                             self.map[ib,jb] = '.'
                         cases.append((ib,jb))
                     else:
-                    #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))):
                         if (self.map[ib,jb] == '¤'):
                             self.map[ib,jb] = '-'
-                        #if ((ib!=i) and (jb!=j) and (ib!=(i+taille-1)) and (jb!=(j+taille-1)))
-                        if (not ((ib == i) and (jb == j))
+                        if (not ((ib == i) and (jb == j)) # pour la porte, quelles frontières bien
                         and not ((ib==i) and (jb==(j+taille-1)))
                         and not ((ib==(i+taille-1)) and (jb==j)) 
                         and not ((ib==(i+taille-1)) and (jb==(j+taille-1)))):
                             if ((0 < ib < (ty-1)) and (0 < (jb) < (tx-1))):
                                 borders.append((ib,jb))
-                        #faire la bonne taille pour simplifier...
-                    #elif ((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))): 
-                    #    self.map[ib,jb] = '-'
-                    #elif (((0 <= ib <= (ty-1)) and (0 <= (jb) <= (tx-1))) and ((ib==i) or (jb==j) or (ib==(i+taille-1)) or (jb==(j+taille-1)))):
-                    #    self.map[ib,jb] = '-'
             col.append(borders)
 
+        # portes
         locs = []
         for e in col:
             tmp = rd.randrange(0, len(e))
-            c = 0
-            while len(list(get_neighbors(self.map, e[tmp]))) == 0 and c < 1000:
+            vu = set()
+            while len(list(get_neighbors(self.map, e[tmp]))) == 0 and len(vu) < len(e):
                 tmp = rd.randrange(0, len(e))
-                c += 1
-            
-            locs.append(e[tmp])
-            
+                vu.add(e[tmp])           
+            locs.append(e[tmp])            
             self.map[locs[-1]] = '+'
 
+        # couloirs
         k = len(locs)
         for i in range(k):
             for j in range(i, k):
                 if i != j:
                     try:
-                        print(locs[i], "->", locs[j])
                         p = find_path(self.map, locs[i], locs[j])
-                        #print(p)
                         for e in p[1:-1]:
                             self.map[e] = '#'
                     except:
                         print('err')
         
-        ind = rd.randrange(0, len(cases))
-        self.map[cases[ind]] = '@'
-        del cases[ind]
+        # personnages, potions, gobelins
 
+        def ajouter_elem(elem, max_i=6):
+            nb_potions = rd.randint(1, max_i)
+            for _ in range(nb_potions):
+                ind = rd.randrange(0, len(cases))
+                self.map[cases[ind]] = elem
+                del cases[ind]
 
+        ajouter_elem('@')
+        ajouter_elem('!')
+        ajouter_elem('&')    
 
-
-
-        #print(self.map)
-        
-
-## arobase 
-
-def test_map():
-    print("Running test_map")
-    m = Map(50, 25) # incohérent
-    m.load("map0.rg")
-    #print(Map.get_img(m.map[2,3]))
-    #print(m.map)
-    #print(m.get_tile(2,3))
-    m.generate()
-
-
-    m.save("map1.rg")
-
-
-
-if (len(sys.argv) == 3):
-    test_map()
+        print("Map generated")   

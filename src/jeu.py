@@ -2,13 +2,18 @@ import numpy as np
 import pygame as pg
 from map import Map
 import character
+import time
 
 class Jeu:
     def __init__(self, map_name):
         self.taille_x = 50
         self.taille_y = 25
         self.map = Map(self.taille_x, self.taille_y)
-        self.map.load(map_name)
+        if (map_name == ""):            
+            self.map.generate()            
+            self.map.save("map_" + str(int(time.time())) +".rg")
+        else:
+            self.map.load(map_name)
         
         pg.init()
         pg.display.set_caption("minimal program")
