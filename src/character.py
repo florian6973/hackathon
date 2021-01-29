@@ -62,12 +62,17 @@ class Player:
     def get_potion(self, tile):
         if tile == 'v':
             self.inventory['vie'] += 1
+            return True
         elif tile == 'd':
             self.inventory['defense'] += 1
+            return True
         elif tile == 'm':
             self.inventory['mana'] += 1
+            return True
         elif tile == 'a':
             self.inventory['force'] += 1
+            return True
+        return False
 
     def fireball(self):
         if self.mana >= 5:
