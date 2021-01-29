@@ -16,7 +16,7 @@ def main():
     player.rect.y = jeu.taille_case
 
         
-    MUSIC = utils.get_path('resx/bgm/Lazare.mp3')
+    MUSIC = utils.get_path('resx/bgm/wishertheme.mp3')
     pg.mixer.init()
     pg.mixer.music.load(MUSIC)
     pg.mixer.music.set_volume(3/10.)
@@ -31,12 +31,21 @@ def main():
             player.indice_animation += 1
             if player.indice_animation == len(player.images) - 1:
                 player.attaque = False
+                jeu.son_attaque_gerard.stop()
                 player.indice_animation = 0
+        if ennemi.attaque:
+            ennemi.indice_animation += 1
+            if ennemi.indice_animation == len(ennemi.images) - 1:
+                ennemi.attaque = False
+                jeu.son_attaque_gerard.stop()
+                ennemi.indice_animation = 0
         jeu.afficher(player, ennemi)
-        player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
-        player.move(jeu.taille_case)
-        l = [jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x + 1], jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x - 1], jeu.map.map[ennemi.coordonnees_y - 1, ennemi.coordonnees_x], jeu.map.map[ennemi.coordonnees_y + 1, ennemi.coordonnees_x]]
-        ennemi.move(player, jeu.taille_case, l)
+        if player.alive:
+            player.rentrer_mur(jeu.map.map[player.coordonnees_y + player.direction[1], player.coordonnees_x + player.direction[0]])
+            player.move(jeu.taille_case)
+        if ennemi.alive:
+            l = [jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x + 1], jeu.map.map[ennemi.coordonnees_y, ennemi.coordonnees_x - 1], jeu.map.map[ennemi.coordonnees_y - 1, ennemi.coordonnees_x], jeu.map.map[ennemi.coordonnees_y + 1, ennemi.coordonnees_x]]
+            ennemi.move(player, jeu.taille_case, l)
 
         # event handling, gets all event from the event queue
         for event in pg.event.get():
@@ -55,6 +64,7 @@ def main():
                     player.direction = (0, 1)
                 elif event.key == pg.K_SPACE and not player.attaque:
                     player.attaque = True
+                    jeu.son_attaque_gerard.play()
                     player.combat(ennemi)
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
