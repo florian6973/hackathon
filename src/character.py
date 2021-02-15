@@ -95,7 +95,9 @@ class Player:
             self.mana -= 5
             fireball = Fireball(
                 self.coordonnees_x, self.coordonnees_y, self.orientation_bis)
-        return(fireball)
+            return(fireball)
+        else:
+            return(None)
     def is_alive(self):
         return self.alive
 

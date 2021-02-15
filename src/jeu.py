@@ -80,11 +80,13 @@ def run_game(jeu):
                 if fireball != None and ennemi.coordonnees_y == fireball.coordonnees_y and ennemi.coordonnees_x == fireball.coordonnees_x:
                     fireball.stop()
                     ennemi.alive = False
+                    fireball = None
             else:
                 ennemis.remove(ennemi)
         if fireball != None:
-            if fireball.coordonnees_x > jeu.taille_x and fireball.coordonnees_x < 0 and fireball.coordonnees_y > jeu.taille_y and fireball.coordonnees_y <0 or  jeu.map.map[fireball.coordonnees_y, fireball.coordonnees_x] == "-":
+            if fireball.coordonnees_x > jeu.taille_x and fireball.coordonnees_x < 0 and fireball.coordonnees_y > jeu.taille_y and fireball.coordonnees_y <0 or  jeu.map.map[fireball.coordonnees_y, fireball.coordonnees_x] == "-" or jeu.map.map[fireball.coordonnees_y, fireball.coordonnees_x] == "¤":
                 fireball.stop()
+                fireball = None
         
         jeu.afficher(player, ennemis, fireball)
         if fireball != None:
@@ -145,7 +147,7 @@ def run_game(jeu):
                 elif event.key == pg.K_v:
                     jeu.son_potion.play()
                     player.use_object("vie")
-                elif event.key == pg.K_RETURN:
+                elif event.key == pg.K_RETURN and fireball == None:
                     fireball = player.fireball()
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
@@ -257,7 +259,8 @@ class Jeu:
             if ennemi.alive:
                 self.screen.blit(
                     ennemi.images[ennemi.indice_animation], ennemi.rect)
-        #if fireball.afficher:
-        #    self.screen.blit(fireball.image, fireball.rect)
+        if fireball != None :
+            if fireball.afficher:
+                self.screen.blit(fireball.image, fireball.rect)
 
         pg.display.flip()
