@@ -77,7 +77,7 @@ class Map:
                 return valid_pos()
 
 
-        nb_rooms = rd.randint(7,14)
+        nb_rooms = rd.randint(15,30)
         col = []
         for _ in range(nb_rooms):
             i,j, taille = valid_pos()
@@ -115,12 +115,15 @@ class Map:
         for i in range(k):
             for j in range(i, k):
                 if i != j:
-                    try:
-                        p = find_path(self.map, locs[i], locs[j])
-                        for e in p[1:-1]:
-                            self.map[e] = '#'
+                    try: #éviter de trop relier
+                        find_path(self.map, locs[i], locs[j], True)
                     except:
-                        print('err')
+                        try:
+                            p = find_path(self.map, locs[i], locs[j])
+                            for e in p[1:-1]:
+                                self.map[e] = '#'
+                        except:
+                            print('err')
         
         # personnages, potions, gobelins
         def ajouter_elem(elem, min_i=1, max_i=6):

@@ -18,15 +18,19 @@ def get_shorter_paths(tentative, positions, through):
             continue
         yield position, path
 
-def is_valid(mp, position):
+def is_valid(mp, position, inv):
     x, y = position
     if not (0 <= y < mp.shape[1] and 0 <= x < mp.shape[0]):
         return False
-    if mp[x,y] != '¤' and mp[x,y] != '+' and mp[x,y] != '#':
-        return False
+    if inv:
+        if mp[x,y] in ['-', '|', '¤']:
+            return False
+    else:
+        if mp[x,y] != '¤' and mp[x,y] != '+' and mp[x,y] != '#':
+            return False
     return True
 
-def get_neighbors(mp, current):
+def get_neighbors(mp, current, inv=False):
     x, y = current
     for dx in [-1, 0, 1]:
         for dy in [-1, 0, 1]:
@@ -35,10 +39,10 @@ def get_neighbors(mp, current):
             if dx != 0 and dy != 0:
                 continue
             position = x + dx, y + dy
-            if is_valid(mp, position):
+            if is_valid(mp, position, inv):
                 yield position
 
-def find_path(mp, origin, destination):
+def find_path(mp, origin, destination, inv=False):
     tentative = {origin: []}
     candidates = [(0, origin)]
     certain = set()
@@ -47,7 +51,7 @@ def find_path(mp, origin, destination):
         if current in certain:
             continue
         certain.add(current)
-        neighbors = set(get_neighbors(mp, current)) - certain
+        neighbors = set(get_neighbors(mp, current, inv)) - certain
         shorter = get_shorter_paths(tentative, neighbors, current)
         for neighbor, path in shorter:
             tentative[neighbor] = path

@@ -12,7 +12,34 @@ from character import *
 import utils
 
 
+def toggle_fullscreen():
+    
+    screen = pg.display.get_surface()
+    tmp = screen.convert()
+    caption = pg.display.get_caption()
+    cursor = pg.mouse.get_cursor()  # Duoas 16-04-2007 
+    
+    w,h = screen.get_width(),screen.get_height()
+    flags = screen.get_flags()
+    bits = screen.get_bitsize()
+    
+    pg.display.quit()
+    pg.display.init()
+    
+    screen = pg.display.set_mode((w,h),flags^pg.FULLSCREEN^pg.HWSURFACE^pg.DOUBLEBUF,bits)
+    screen.blit(tmp,(0,0))
+    pg.display.set_caption(*caption)
+
+    pg.key.set_mods(0) #HACK: work-a-round for a SDL bug??
+
+    pg.mouse.set_cursor( *cursor )  # Duoas 16-04-2007
+    
+    return screen
+
+
 def run_game(jeu):
+
+
     x,y=list(zip(*np.where(jeu.map.map == '@')))[0][::-1]
     player = Player("Robin", pos=(x,y))
     
@@ -30,7 +57,8 @@ def run_game(jeu):
     fireball = None
     running = True
      
-    # main loop
+
+    # main loop : à remettre dans le fichier main...
     while running:
         pg.time.wait(50)
         if player.attaque:
@@ -74,9 +102,10 @@ def run_game(jeu):
             if event.type == pg.QUIT:
                 # change the value to False, to exit the main loop
                 running = False
-            elif event.type == pg.KEYDOWN:
-                
-                if event.key == pg.K_LEFT:
+            elif event.type == pg.KEYDOWN:                
+                if event.key == pg.K_ESCAPE:
+                    running = False
+                elif event.key == pg.K_LEFT:
                     player.direction = (-1, 0)
                     if player.orientation != "gauche":
                         player.direction = (0, 0)
@@ -121,13 +150,21 @@ def run_game(jeu):
             elif event.type == pg.KEYUP:
                 player.direction = (0, 0)
 
+#https://www.dafont.com/mtheme.php?id=4
+
 class Jeu:
     def __init__(self, map_name):
         def run():
             run_game(self)
+        def set_nom(val):
+            #print(val)
+            self.comment = self.font.render(val + ", trouvez l'objet caché !", True, (0, 0, 0))
         
-        self.taille_x = 50
-        self.taille_y = 25
+        pg.init()      
+        infoObject = pg.display.Info()
+        self.taille_x = infoObject.current_w//16
+        self.taille_y = (infoObject.current_h)//16 - 6 # pour le texte
+        print(self.taille_x, self.taille_y)
         self.map = Map(self.taille_x, self.taille_y)
         if (map_name == ""):
             self.map.generate()
@@ -138,24 +175,31 @@ class Jeu:
 
         pg.display.set_icon(icone)
 
-        pg.init()      
         pg.display.set_caption("Le Wisher : Gérard Dérive")
 
+        p_font = get_path("resx/font/Seagram tfb.ttf")
         self.taille_case = 16        
-        self.comment = "Trouvez l'objet caché !"
+        self.son_potion = pg.mixer.Sound(
+            get_path('resx/bgm/potion.mp3'))
         self.son_attaque_gerard = pg.mixer.Sound(
             get_path('resx/bgm/swordhit.mp3'))
-        self.font = pg.font.SysFont("Comic Sans MS", 16)
+        self.font = pg.font.Font(p_font, 16)
+        self.comment = self.font.render("Trouvez l'objet caché !", True, (0, 0, 0))
+        sx, sy = 16 * self.taille_x, 16*self.taille_y + 100
         self.screen = pg.display.set_mode(
-            (16 * self.taille_x, 16*self.taille_y + 100))
-        self.son_potion = pg.mixer.Sound(get_path('resx/bgm/swordhit.mp3'))
-        #self.potion = self.map.textures['!']
-        menu = pgm.Menu(300, 400, 'Welcome',
-                       theme=pgm.themes.THEME_BLUE)
-        menu.add_text_input('Name :', default='John Doe')
+            (sx, sy))
+        self.screen = toggle_fullscreen()
+
+        mytheme = pgm.themes.THEME_DARK.copy()
+        mytheme.title_font = p_font
+        mytheme.widget_font = p_font
+        menu = pgm.Menu(300, 400, 'LE WISHER',
+                       theme=mytheme)
+        menu.add_text_input('Nom :', default='', onchange=set_nom)
         #menu.add_selector('Difficulty :', [('Hard', 1), ('Easy', 2)], onchange=set_difficulty)        
-        menu.add_button('Play', run)
-        menu.add_button('Quit', pgm.events.EXIT)
+        menu.add_button('Jouer', run)
+        menu.add_button('Quitter', pgm.events.EXIT)
+        #menu.set_font(self.font)
         menu.mainloop(self.screen)
 
         
@@ -200,8 +244,7 @@ class Jeu:
         self.screen.blit(
             text_potion3, [450, self.taille_y * self.taille_case + 50, 16, 16])
         self.screen.blit(
-            self.font.render(
-            self.comment, True, (0, 0, 0)), [10, self.taille_y * self.taille_case + 80, 16, 16])
+            self.comment, [10, self.taille_y * self.taille_case + 80, 16, 16])
         for i in range(self.taille_y):
             for j in range(self.taille_x):
                 for img in self.map.get_tile(i, j):
@@ -214,7 +257,7 @@ class Jeu:
             if ennemi.alive:
                 self.screen.blit(
                     ennemi.images[ennemi.indice_animation], ennemi.rect)
-        if fireball != None and fireball.afficher:
-            self.screen.blit(fireball.image, fireball.rect)
+        #if fireball.afficher:
+        #    self.screen.blit(fireball.image, fireball.rect)
 
         pg.display.flip()
